@@ -13,19 +13,31 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default class App extends Component {
     state = {
-        linha: [],
+        linhas: [],
         quantidade: "",
         descricao: "",
         valorUnico: "",
         valorTotal: "",
-        valorTotalFinal: "0,00"
+        valorTotalFinal: "0,00",
+        namePrevia: ""
+    }
+
+    setStorageOrcamento = async () => {
+        let dados = await AsyncStorage.getItem(this.props.route.params.paramKey)
+        dados = JSON.parse(dados)
+        dados.dadosCliente.linhas = this.state.linhas
+        await AsyncStorage.multiMerge([
+            [this.props.route.params.paramKey, JSON.stringify(dados)]
+        ])
+        let dadosNow = await AsyncStorage.getItem(this.props.route.params.paramKey)
+        console.log(dadosNow)
     }
 
     count = 0
 
-    addLine = () => {
-        let linha = this.state.linha
-        linha.push(
+    addLine = async () => {
+        let linhasNow = this.state.linhas
+        await linhasNow.push(
             [
                 this.count, 
                 this.state.quantidade, 
@@ -35,8 +47,8 @@ export default class App extends Component {
             ]
             )
         this.count++
-        this.setState({ linha })
-        console.log(this.state.linha)
+        this.setState({ linhas: linhasNow })
+        this.setStorageOrcamento()
     }
     render() {
         return (
@@ -49,7 +61,7 @@ export default class App extends Component {
                             <Text style={styles.Tdu}>V.UNIT</Text>
                             <Text style={styles.Tdt}>TOTAL</Text>
                         </View>
-                        {this.state.linha.map((ele) => (
+                        {this.state.linhas.map((ele) => (
                             <View key={ele[0]} style={styles.Tr}>
                                 <Text style={styles.Tdq} >{ele[1]}</Text>
                                 <Text style={styles.Tdd} >{ele[2]}</Text>
@@ -100,13 +112,6 @@ export default class App extends Component {
 }
 
 const styles = StyleSheet.create({
-    MainContainer: {
-        justifyContent: 'center',
-        alignItems: 'center'
-      },
-      Body: {
-          backgroundColor: '#ffff',
-      },
       text: {
           color: 'white',
           textAlign: 'center',
@@ -116,32 +121,6 @@ const styles = StyleSheet.create({
       ImageStyle: {
           height: 60,
           width: 70
-      },
-      Top: {
-          top: 0,
-          height: 50,
-          justifyContent: "center",
-          alignItems: "center",
-          backgroundColor: "rgba(0,0,0,.9)"
-      },
-      TextTop: {
-          color: "#fff",
-          fontSize: 18
-      },
-      TextInput: {
-          backgroundColor: "#fff",
-          width: 300,
-          margin: 10,
-          borderRadius: 20
-      },
-      TextInputDate: {
-          backgroundColor: "#fff",
-          width: 200,
-          borderRadius: 20
-      },
-      Date: {
-          flexDirection: "row",
-          margin: 10
       },
       Button: {
           backgroundColor: "#333",

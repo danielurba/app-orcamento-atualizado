@@ -13,7 +13,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export default class App extends Component {
   state = {
     namePrevia: '',
-    orcamento: {
+    dadosCliente: {
       data: '',
       nome: '',
       endereco: '',
@@ -29,87 +29,156 @@ export default class App extends Component {
       rg: '',
       modeloCarro: '',
       placaCarro: '',
+      linhas: null
     }
   }
 
   async componentDidMount() {
-    const jsonValue = JSON.stringify(this.state.orcamento)
-    const namePrevia = `${Date.now()}_Previa_Orçamento`
-    this.setState({ namePrevia: namePrevia })
-    await AsyncStorage.setItem(namePrevia,jsonValue)
+    if(this.props.route.params) {
+      let budget = await AsyncStorage.getItem(this.props.route.params.budget)
+      budget = JSON.parse(budget)
+      let dadosClienteNow = { ...this.state.dadosCliente }
+      dadosClienteNow.data = budget.dadosCliente.data
+      dadosClienteNow.nome = budget.dadosCliente.nome
+      dadosClienteNow.endereco = budget.dadosCliente.endereco
+      dadosClienteNow.numero = budget.dadosCliente.numero
+      dadosClienteNow.bairro = budget.dadosCliente.bairro
+      dadosClienteNow.cep = budget.dadosCliente.cep
+      dadosClienteNow.cidade = budget.dadosCliente.cidade
+      dadosClienteNow.estado = budget.dadosCliente.estado
+      dadosClienteNow.fone = budget.dadosCliente.fone
+      dadosClienteNow.condPag = budget.dadosCliente.condPag
+      dadosClienteNow.prazoEntrega = budget.dadosCliente.prazoEntrega
+      dadosClienteNow.cnpjCpf = budget.dadosCliente.cnpjCpf
+      dadosClienteNow.rg = budget.dadosCliente.rg
+      dadosClienteNow.modeloCarro = budget.dadosCliente.modeloCarro
+      dadosClienteNow.placaCarro = budget.dadosCliente.placaCarro
+      this.setState({ dadosCliente: dadosClienteNow })
+    } else {
+      const jsonValue = JSON.stringify(this.state)
+      const namePrevia = `${Date.now()}_Previa_Orçamento`
+      this.setState({ namePrevia: namePrevia })
+      await AsyncStorage.setItem(namePrevia,jsonValue)
+    }
 }
   addInformationState = async (name, value) => {
-    let orcamento = { ...this.state.orcamento }
+    let dadosClienteNow = { ...this.state.dadosCliente }
     if(name == "data") {
-      orcamento.data = value
+      dadosClienteNow.data = value
     } else if(name == "nomeCliente") {
-      orcamento.nome = value
+      dadosClienteNow.nome = value
     } else if(name == "endereco") {
-      orcamento.endereco = value
+      dadosClienteNow.endereco = value
     } else if(name == "numero") {
-      orcamento.numero = value
+      dadosClienteNow.numero = value
     } else if(name == "bairro") {
-      orcamento.bairro = value
+      dadosClienteNow.bairro = value
     } else if(name == "cep") {
-      orcamento.cep = value
+      dadosClienteNow.cep = value
     } else if(name == "cidade") {
-      orcamento.cidade = value
+      dadosClienteNow.cidade = value
     } else if(name == "estado") {
-      orcamento.estado = value
+      dadosClienteNow.estado = value
     } else if(name == "fone") {
-      orcamento.fone = value
+      dadosClienteNow.fone = value
     } else if(name == "condPag") {
-      orcamento.condPag = value
+      dadosClienteNow.condPag = value
     } else if(name == "prazoEntrega") {
-      orcamento.prazoEntrega = value
+      dadosClienteNow.prazoEntrega = value
     } else if(name == "cnpjCpf") {
-      orcamento.cnpjCpf = value
+      dadosClienteNow.cnpjCpf = value
     } else if(name == "rg") {
-      orcamento.rg = value
+      dadosClienteNow.rg = value
     } else if(name == "modeloCarro") {
-      orcamento.modeloCarro = value
+      dadosClienteNow.modeloCarro = value
     } else if(name == "placaCarro") {
-      orcamento.placaCarro = value
+      dadosClienteNow.placaCarro = value
     }
-    await this.setState({ orcamento })
-    this.setStorageOrcamento()
+    await this.setState({ dadosCliente: dadosClienteNow })
+    this.setStorageDadosCliente()
   }
 
-  setStorageOrcamento = async () => {
+  setStorageDadosCliente = async () => {
     await AsyncStorage.multiSet([
-      [this.state.namePrevia, JSON.stringify(this.state.orcamento)]
+      [this.state.namePrevia, JSON.stringify(this.state)]
     ])
   }
 
-  teste = () => {
-    console.log(this.state) 
+  teste = async () => {
+    let dados = await AsyncStorage.getItem(this.state.namePrevia)
+    console.log(dados)
   }
   render() {
     return (
       <ScrollView>
         <View style={styles.MainContainer}>
-            <View style={styles.Date}>
-                <TextInputComponent style={styles.TextInputDate} placeholder="Data" name={'data'} onChangeText={this.addInformationState}/>
-                <TouchableOpacity style={styles.Button} onPress={this.teste}>
-                    <Text style={styles.TextButton}>Data Atual</Text>
-                </TouchableOpacity>
+            <View style={styles.ViewInputText}>
+              <Text style={styles.TextInfoInput}>Data</Text>
+              <View style={styles.Date}>
+                  <TextInputComponent style={styles.TextInputDate} defaultValue={this.state.dadosCliente.data} name={'data'} onChangeText={this.addInformationState}/>
+                  <TouchableOpacity style={styles.Button} onPress={this.teste}>
+                      <Text style={styles.TextButton}>Data Atual</Text>
+                  </TouchableOpacity>
+              </View>
             </View>
-            <TextInputComponent style={styles.TextInput} placeholder="Nome do cliente" name={'nomeCliente'} onChangeText={this.addInformationState} />
-            <TextInputComponent style={styles.TextInput} placeholder="Endereço" name={'endereco'} onChangeText={this.addInformationState}/>
-            <TextInputComponent style={styles.TextInput} keyboardType="numeric" placeholder="Numero da casa" name={'numero'} onChangeText={this.addInformationState}/>
-            <TextInputComponent style={styles.TextInput} placeholder="Bairro" name={'bairro'} onChangeText={this.addInformationState}/>
-            <TextInputComponent style={styles.TextInput} keyboardType="numeric" placeholder="CEP" name={'cep'} onChangeText={this.addInformationState}/>
-            <TextInputComponent style={styles.TextInput} placeholder="Cidade" name={'cidade'} onChangeText={this.addInformationState}/>
-            <TextInputComponent style={styles.TextInput} placeholder="Estado" name={'estado'} onChangeText={this.addInformationState}/>
-            <TextInputComponent style={styles.TextInput} keyboardType="numeric" placeholder="Fone" name={'fone'} onChangeText={this.addInformationState}/>
-            <TextInputComponent style={styles.TextInput} placeholder="Condição de pagamento" name={'condPag'} onChangeText={this.addInformationState}/>
-            <TextInputComponent style={styles.TextInput} placeholder="Prazo de entrega" name={'prazoEntrega'} onChangeText={this.addInformationState}/>
-            <TextInputComponent style={styles.TextInput} keyboardType="numeric" placeholder="CNPJ/CFP" name={'cnpjCpf'} onChangeText={this.addInformationState}/>
-            <TextInputComponent style={styles.TextInput} keyboardType="numeric" placeholder="Inscr. Est./ RG" name={'rg'} onChangeText={this.addInformationState}/>
-            <TextInputComponent style={styles.TextInput} placeholder="Modelo do carro" name={'modeloCarro'} onChangeText={this.addInformationState}/>
-            <TextInputComponent style={styles.TextInput} placeholder="Placa do carro" name={'placaCarro'} onChangeText={this.addInformationState}/>
+            <View style={styles.ViewInputText}>
+              <Text style={styles.TextInfoInput}>Nome cliente</Text>
+              <TextInputComponent style={styles.TextInput} defaultValue={this.state.dadosCliente.nome} name={'nomeCliente'} onChangeText={this.addInformationState} />
+            </View>
+            <View style={styles.ViewInputText}>
+              <Text style={styles.TextInfoInput}>Endereço</Text>
+              <TextInputComponent style={styles.TextInput} defaultValue={this.state.dadosCliente.endereco} name={'endereco'} onChangeText={this.addInformationState}/>
+            </View>
+            <View style={styles.ViewInputText}>
+              <Text style={styles.TextInfoInput}>Número</Text>
+              <TextInputComponent style={styles.TextInput} keyboardType="numeric" defaultValue={this.state.dadosCliente.numero} name={'numero'} onChangeText={this.addInformationState}/>
+            </View>
+            <View style={styles.ViewInputText}>
+              <Text style={styles.TextInfoInput}>Bairro</Text>
+              <TextInputComponent style={styles.TextInput} defaultValue={this.state.dadosCliente.bairro} name={'bairro'} onChangeText={this.addInformationState}/>
+            </View>
+            <View style={styles.ViewInputText}>
+              <Text style={styles.TextInfoInput}>Cep</Text>
+              <TextInputComponent style={styles.TextInput} keyboardType="numeric" defaultValue={this.state.dadosCliente.cep} name={'cep'} onChangeText={this.addInformationState}/>
+            </View>
+            <View style={styles.ViewInputText}>
+              <Text style={styles.TextInfoInput}>Cidade</Text>
+              <TextInputComponent style={styles.TextInput} defaultValue={this.state.dadosCliente.cidade} name={'cidade'} onChangeText={this.addInformationState}/>
+            </View>
+            <View style={styles.ViewInputText}>
+              <Text style={styles.TextInfoInput}>Estado</Text>
+              <TextInputComponent style={styles.TextInput} defaultValue={this.state.dadosCliente.estado} name={'estado'} onChangeText={this.addInformationState}/>
+            </View>
+            <View style={styles.ViewInputText}>
+              <Text style={styles.TextInfoInput}>Telefone</Text>
+              <TextInputComponent style={styles.TextInput} keyboardType="numeric" defaultValue={this.state.dadosCliente.fone} name={'fone'} onChangeText={this.addInformationState}/>
+            </View>
+            <View style={styles.ViewInputText}>
+              <Text style={styles.TextInfoInput}>Condição de pagamento</Text>
+              <TextInputComponent style={styles.TextInput} defaultValue={this.state.dadosCliente.condPag} name={'condPag'} onChangeText={this.addInformationState}/>
+            </View>
+            <View style={styles.ViewInputText}>
+              <Text style={styles.TextInfoInput}>Prazo de entrega</Text>
+              <TextInputComponent style={styles.TextInput} defaultValue={this.state.dadosCliente.prazoEntrega} name={'prazoEntrega'} onChangeText={this.addInformationState}/>
+            </View>
+            <View style={styles.ViewInputText}>
+              <Text style={styles.TextInfoInput}>CNPJ/CFP</Text>
+              <TextInputComponent style={styles.TextInput} keyboardType="numeric" defaultValue={this.state.dadosCliente.cnpjCpf} name={'cnpjCpf'} onChangeText={this.addInformationState}/>
+            </View>
+            <View style={styles.ViewInputText}>
+              <Text style={styles.TextInfoInput}>Inscr. Est./ RG</Text>
+              <TextInputComponent style={styles.TextInput} keyboardType="numeric" defaultValue={this.state.dadosCliente.rg} name={'rg'} onChangeText={this.addInformationState}/>
+            </View>
+            <View style={styles.ViewInputText}>
+              <Text style={styles.TextInfoInput}>Modelo do carro</Text>
+              <TextInputComponent style={styles.TextInput} defaultValue={this.state.dadosCliente.modeloCarro} name={'modeloCarro'} onChangeText={this.addInformationState}/>
+            </View>
+            <View style={styles.ViewInputText}>
+              <Text style={styles.TextInfoInput}>Placa do carro</Text>
+              <TextInputComponent style={styles.TextInput} defaultValue={this.state.dadosCliente.placaCarro} name={'placaCarro'} onChangeText={this.addInformationState}/>
+            </View>
             <TouchableOpacity style={styles.Button} onPress={() =>
-                this.props.navigation.navigate('Budget')}>
+                this.props.navigation.navigate('Budget',{paramKey: this.state.namePrevia})}>
               <Text style={styles.TextButton}>Proxima tela</Text>
             </TouchableOpacity>
         </View>
@@ -134,7 +203,6 @@ const styles = StyleSheet.create({
   TextInput: {
     backgroundColor: "#fff",
     width: 350,
-    margin: 10,
     borderRadius: 10
 },
 TextInputDate: {
@@ -144,7 +212,6 @@ TextInputDate: {
 },
 Date: {
     flexDirection: "row",
-    margin: 10
 },
 TextButton: {
   color: "#fff",
@@ -157,4 +224,11 @@ Button: {
   borderRadius: 10,
   margin: 10
 },
+
+ViewInputText: {
+  margin: 10
+},
+TextInfoInput: {
+  marginVertical: 5
+}
   });
