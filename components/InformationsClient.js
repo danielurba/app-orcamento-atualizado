@@ -33,6 +33,8 @@ export default class App extends Component {
     }
   }
 
+  update = false
+
   async componentDidMount() {
     if(this.props.route.params) {
       let budget = await AsyncStorage.getItem(this.props.route.params.budget)
@@ -53,12 +55,13 @@ export default class App extends Component {
       dadosClienteNow.rg = budget.dadosCliente.rg
       dadosClienteNow.modeloCarro = budget.dadosCliente.modeloCarro
       dadosClienteNow.placaCarro = budget.dadosCliente.placaCarro
+      this.setState({ namePrevia: this.props.route.params.budget})
       this.setState({ dadosCliente: dadosClienteNow })
+      this.update = true
     } else {
+      await this.setState({ namePrevia: `${Date.now()}_Previa_Orçamento`})
       const jsonValue = JSON.stringify(this.state)
-      const namePrevia = `${Date.now()}_Previa_Orçamento`
-      this.setState({ namePrevia: namePrevia })
-      await AsyncStorage.setItem(namePrevia,jsonValue)
+      await AsyncStorage.setItem(this.state.namePrevia,jsonValue)
     }
 }
   addInformationState = async (name, value) => {
@@ -104,9 +107,15 @@ export default class App extends Component {
     ])
   }
 
-  teste = async () => {
-    let dados = await AsyncStorage.getItem(this.state.namePrevia)
-    console.log(dados)
+  setDateTodayInput = async () => {
+    const data = new Date(),
+        dia  = data.getDate().toString(),
+        diaF = (dia.length == 1) ? '0'+dia : dia,
+        mes  = (data.getMonth()+1).toString(), //+1 pois no getMonth Janeiro começa com zero.
+        mesF = (mes.length == 1) ? '0'+mes : mes,
+        anoF = data.getFullYear();
+        this.setState({ data: this.state.dadosCliente.data = diaF+"/"+mesF+"/"+anoF})
+        this.addInformationState('data',diaF+"/"+mesF+"/"+anoF)
   }
   render() {
     return (
@@ -116,7 +125,7 @@ export default class App extends Component {
               <Text style={styles.TextInfoInput}>Data</Text>
               <View style={styles.Date}>
                   <TextInputComponent style={styles.TextInputDate} defaultValue={this.state.dadosCliente.data} name={'data'} onChangeText={this.addInformationState}/>
-                  <TouchableOpacity style={styles.Button} onPress={this.teste}>
+                  <TouchableOpacity style={styles.Button} onPress={this.setDateTodayInput}>
                       <Text style={styles.TextButton}>Data Atual</Text>
                   </TouchableOpacity>
               </View>
@@ -178,7 +187,7 @@ export default class App extends Component {
               <TextInputComponent style={styles.TextInput} defaultValue={this.state.dadosCliente.placaCarro} name={'placaCarro'} onChangeText={this.addInformationState}/>
             </View>
             <TouchableOpacity style={styles.Button} onPress={() =>
-                this.props.navigation.navigate('Budget',{paramKey: this.state.namePrevia})}>
+                this.props.navigation.navigate('Budget',{paramKey: this.state.namePrevia, update: this.update})}>
               <Text style={styles.TextButton}>Proxima tela</Text>
             </TouchableOpacity>
         </View>
