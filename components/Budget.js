@@ -10,7 +10,9 @@ import {
   ScrollView,
 } from 'react-native';
 
-import FlashMessage from "react-native-flash-message";
+import convertHtmlToPdf from './ConvertHtmlPdf.js'
+
+import RNHTMLtoPDF from 'react-native-html-to-pdf';
 
 import { showMessage, hideMessage } from "react-native-flash-message";
 
@@ -61,8 +63,8 @@ export default class App extends Component {
         await AsyncStorage.multiMerge([
             [this.props.route.params.paramKey, JSON.stringify(dados)]
         ])
-        let dadosNow = await AsyncStorage.getItem(this.props.route.params.paramKey)
-        console.log(dadosNow)
+        // let dadosNow = await AsyncStorage.getItem(this.props.route.params.paramKey)
+        // console.log(dadosNow)
     }
 
     addLine = async () => {
@@ -109,16 +111,12 @@ export default class App extends Component {
                         title: 'CameraExample App External Storage Write Permission',
                         message:
                             'CameraExample App needs access to Storage data in your SD Card ',
-                            buttonNeutral: "Ask Me Later",
-                            buttonNegative: "Cancel",
-                            buttonPositive: "OK"
                     }
                 );
                 if (granted === PermissionsAndroid.RESULTS.GRANTED) {
                     //If WRITE_EXTERNAL_STORAGE Permission is granted
                     //changing the state to show Create PDF option
-                    // that.createPDF();
-                    console.log("deu certo")
+                    that.createPDF();
                 } else {
                     alert(`A permissão foi negada pelo usuário ! `);
                 }
@@ -131,8 +129,24 @@ export default class App extends Component {
         if (Platform.OS === 'android') {
             requestExternalWritePermission();
         } else {
-            // this.createPDF();
+            this.createPDF();
         }
+    }
+
+    async createPDF() {
+        convertHtmlToPdf(this.state.namePrevia)
+        // let options = {
+        //     html: convertHtmlToPdf(this.state.namePrevia),
+        //     fileName: `${Date.now()}_Orçamento`,
+        //     directory: 'Orcamentos',
+        // }
+        // let file = await RNHTMLtoPDF.convert(options);
+        // console.log(file.filePath)
+        // showMessage({
+        //     message: "Pdf criado com sucesso !" + file.filePath,
+        //     type: "success",
+        //     });
+        // this.setState({ filePath: file.filePath });
     }
 
     render() {
@@ -200,13 +214,12 @@ export default class App extends Component {
                                     }}
                                     style={styles.ImageStyle}
                                 />
-                                <Text style={styles.text}>Create PDF</Text>
+                                <Text style={styles.text}>Criar PDF</Text>
                             </View>
                         </TouchableOpacity>
                         <Text style={styles.text}></Text>
                     </View>
                 </View>
-                <FlashMessage position="top" />
             </ScrollView>
         )
     }

@@ -8,6 +8,8 @@ import 'react-native-gesture-handler';
 
 const Stack = createStackNavigator();
 
+import FlashMessage from "react-native-flash-message";
+
 import Home from './components/Home'
 import Budget from './components/Budget'
 import BudgetSaves from './components/BudgetSaves'
@@ -75,6 +77,7 @@ export default class App extends Component {
           }}
         />
       </Stack.Navigator>
+      <FlashMessage position="top" />
     </NavigationContainer>
     )
   }
