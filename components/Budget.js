@@ -134,19 +134,18 @@ export default class App extends Component {
     }
 
     async createPDF() {
-        convertHtmlToPdf(this.state.namePrevia)
-        // let options = {
-        //     html: convertHtmlToPdf(this.state.namePrevia),
-        //     fileName: `${Date.now()}_Orçamento`,
-        //     directory: 'Orcamentos',
-        // }
-        // let file = await RNHTMLtoPDF.convert(options);
-        // console.log(file.filePath)
-        // showMessage({
-        //     message: "Pdf criado com sucesso !" + file.filePath,
-        //     type: "success",
-        //     });
-        // this.setState({ filePath: file.filePath });
+        let options = {
+            html: await convertHtmlToPdf(this.state.namePrevia),
+            fileName: `${Date.now()}_Orçamento`,
+            directory: 'Orcamentos',
+        }
+        let file = await RNHTMLtoPDF.convert(options);
+        console.log(file.filePath)
+        showMessage({
+            message: "Pdf criado com sucesso !" + file.filePath,
+            type: "success",
+            });
+        this.setState({ filePath: file.filePath });
     }
 
     render() {
