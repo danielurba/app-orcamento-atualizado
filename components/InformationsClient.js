@@ -29,7 +29,8 @@ export default class App extends Component {
       rg: '',
       modeloCarro: '',
       placaCarro: '',
-      linhas: null
+      maoDeObra: '',
+      linhas: null,
     }
   }
 
