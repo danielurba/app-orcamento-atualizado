@@ -20,58 +20,75 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default class App extends Component {
     state = {
-        linhas: [],
+        linhasPecas: [],
+        linhasMaoDeObra: [],
         quantidade: "1",
         descricao: "",
         valorUnico: "",
         valorTotal: "",
+        valorTotalMãoDeObra: "0",
+        valorTotalPecas: "0",
         valorTotalFinal: "0,00",
-        valorMãoDeObra: "0",
         namePrevia: ""
     }
 
-    count = 0
+    countPeca = 0
+    countMaoDeObra = 0
 
     async componentDidMount() {
         let dados = await AsyncStorage.getItem(this.props.route.params.paramKey)
         dados = JSON.parse(dados)
         this.setState({ namePrevia: dados.namePrevia})
-        if(dados.dadosCliente.linhas != null) {
-            this.count = dados.dadosCliente.linhas.length
+        if(dados.dadosCliente.linhasPecas != null) {
+            this.count = dados.dadosCliente.linhasPecas.length
         }
         if(this.props.route.params.update) {
-            if(dados.dadosCliente.linhas != null) {
-                let valorTotalFinalLinhas = 0
-                valorTotalFinalLinhas += Number(dados.dadosCliente.maoDeObra)
-                dados.dadosCliente.linhas.forEach((linha) => {
-                    valorTotalFinalLinhas += Number(linha[linha.length -1])
-                })
-                this.setState({ valorTotalFinal: String(valorTotalFinalLinhas) + ",00"})
-                this.setState({ linhas: dados.dadosCliente.linhas })
+            if(dados.dadosCliente.linhasPecas != null) {
+                // let valorTotalFinalLinhas = 0
+                // valorTotalFinalLinhas += Number(dados.dadosCliente.linhasMaoDeObra)
+                // dados.dadosCliente.linhas.forEach((linha) => {
+                //     valorTotalFinalLinhas += Number(linha[linha.length -1])
+                // })
+                // this.setState({ valorTotalFinal: String(valorTotalFinalLinhas) + ",00"})
+                this.setState({ linhasPecas: dados.dadosCliente.linhasPecas })
+                this.setState({ linhasMaoDeObra: dados.dadosCliente.linhasMaoDeObra })
             } else {
-                this.setState({ valorTotalFinal: dados.dadosCliente.maoDeObra + ",00"})
+                // this.setState({ valorTotalFinal: dados.dadosCliente.maoDeObra + ",00"})
             }
-            this.setState({ valorMãoDeObra: dados.dadosCliente.maoDeObra})
+            // this.setState({ valorMãoDeObra: dados.dadosCliente.maoDeObra})
         }
     }
 
-    removeStorageStateLine = async (line) => {
-        let lines = this.state.linhas
+    removeStorageStateLinePecas = async (line) => {
+        let lines = this.state.linhasPecas
         lines.splice(lines.indexOf(line),1)
-        this.setState({ linhas: lines })
+        this.setState({ linhasPecas: lines })
         let dados = await AsyncStorage.getItem(this.props.route.params.paramKey)
         dados = JSON.parse(dados)
-        dados.dadosCliente.linhas = lines
-        this.count--
+        dados.dadosCliente.linhasPecas = lines
+        this.countPeca--
         await AsyncStorage.multiSet([
             [this.state.namePrevia, JSON.stringify(dados)]
           ])
     }
 
-    setStorageOrcamento = async () => {
+    removeStorageStateLineMaoDeObra = async (line) => {
+        let lines = this.state.linhasMaoDeObra
+        lines.splice(lines.indexOf(line),1)
+        this.setState({ linhasMaoDeObra: lines })
         let dados = await AsyncStorage.getItem(this.props.route.params.paramKey)
         dados = JSON.parse(dados)
-        dados.dadosCliente.linhas = this.state.linhas
+        dados.dadosCliente.linhasMaoDeObra = lines
+        this.countMaoDeObra--
+        await AsyncStorage.multiSet([
+            [this.state.namePrevia, JSON.stringify(dados)]
+          ])
+    }
+
+    setStoragePecas = async () => {
+        let dados = await AsyncStorage.getItem(this.props.route.params.paramKey)
+        dados = JSON.parse(dados)
+        dados.dadosCliente.linhasPecas = this.state.linhasPecas
         await AsyncStorage.multiMerge([
             [this.props.route.params.paramKey, JSON.stringify(dados)]
         ])
@@ -79,24 +96,19 @@ export default class App extends Component {
         // console.log(dadosNow) 
     }
 
-    setStorageMaoDeObra = async (text) => {
-        this.setState({ valorMãoDeObra: text })
+    setStorageMaoDeObra = async () => {
         let dados = await AsyncStorage.getItem(this.props.route.params.paramKey)
         dados = JSON.parse(dados)
-        dados.dadosCliente.maoDeObra = text
-        let valorTotalFinalLinhas = 0
-        valorTotalFinalLinhas += Number(text)
-        this.state.linhas.forEach((linha) => {
-            valorTotalFinalLinhas += Number(linha[linha.length -1])
-        })
-        this.setState({ valorTotalFinal: String(valorTotalFinalLinhas) + ",00"})
+        dados.dadosCliente.linhasMaoDeObra = this.state.linhasMaoDeObra
         await AsyncStorage.multiMerge([
             [this.props.route.params.paramKey, JSON.stringify(dados)]
         ])
+        // let dadosNow = await AsyncStorage.getItem(this.props.route.params.paramKey)
+        // console.log(dadosNow) 
     }
 
-    addLine = async () => {
-        let linhasNow = this.state.linhas
+    addPecaLinha = async () => {
+        let linhasNow = this.state.linhasPecas
         if(this.state.descricao == "") {
             showMessage({
                 message: "Campo de descriçao do produto vazio !",
@@ -106,22 +118,51 @@ export default class App extends Component {
         }
         await linhasNow.push(
             [
-                this.count, 
+                this.countPeca, 
                 this.state.quantidade, 
                 this.state.descricao, 
                 this.state.valorUnico == "" ? "0" : this.state.valorUnico,
                 this.state.valorTotal == "" ? "0" : this.state.valorTotal
             ]
             )
-        this.count++
-        this.setState({ linhas: linhasNow })
-        this.setStorageOrcamento()
+        this.countPeca++
+        this.setState({ linhasPecas: linhasNow })
+        this.setStoragePecas()
         let valorTotalFinalLinhas = 0
-        valorTotalFinalLinhas += Number(this.state.valorMãoDeObra)
-        this.state.linhas.forEach((linha) => {
+        this.state.linhasPecas.forEach((linha) => {
             valorTotalFinalLinhas += Number(linha[linha.length -1])
         })
-        this.setState({ valorTotalFinal: String(valorTotalFinalLinhas) + ",00"})
+        this.setState({ valorTotalPecas: String(valorTotalFinalLinhas)})
+        this.setState({ valorTotalFinal: String(Number(valorTotalFinalLinhas) + Number(this.state.valorTotalMãoDeObra))})
+    }
+
+    addMaoDeObra = async () => {
+        let linhasNow = this.state.linhasMaoDeObra
+        if(this.state.descricao == "") {
+            showMessage({
+                message: "Campo de descriçao do produto vazio !",
+                type: "danger",
+                });
+            return
+        }
+        await linhasNow.push(
+            [
+                this.countMaoDeObra, 
+                this.state.quantidade, 
+                this.state.descricao, 
+                this.state.valorUnico == "" ? "0" : this.state.valorUnico,
+                this.state.valorTotal == "" ? "0" : this.state.valorTotal
+            ]
+            )
+        this.countMaoDeObra++
+        this.setState({ linhasMaoDeObra: linhasNow })
+        this.setStorageMaoDeObra()
+        let valorTotalFinalLinhas = 0
+        this.state.linhasMaoDeObra.forEach((linha) => {
+            valorTotalFinalLinhas += Number(linha[linha.length -1])
+        })
+        this.setState({ valorTotalMãoDeObra: String(valorTotalFinalLinhas)})
+        this.setState({ valorTotalFinal: String(Number(valorTotalFinalLinhas) + Number(this.state.valorTotalPecas))})
     }
 
     addTotalAmount = (value) => {
@@ -181,6 +222,7 @@ export default class App extends Component {
             <ScrollView>
                 <View>
                     <View style={styles.ContainerTable}>
+                    <Text style={styles.TextInfoInput}>Tabela de peças</Text>
                         <View style={styles.Tr}>
                             <Text style={styles.Tdq}>QTD</Text>
                             <Text style={styles.Tdd}>DESCRIÇÂO</Text>
@@ -188,31 +230,62 @@ export default class App extends Component {
                             <Text style={styles.Tdt}>TOTAL</Text>
                             <Text style={styles.Tda}></Text>
                         </View>
-                        {this.state.linhas.map((ele) => (
+                        {this.state.linhasPecas.map((ele) => (
                             <View key={ele[0]} style={styles.Tr}>
                                 <Text style={styles.Tdq} >{ele[1]}</Text>
                                 <Text style={styles.Tdd} >{ele[2]}</Text>
                                 <Text style={styles.Tdu} >R${ele[3]},00</Text>
                                 <Text style={styles.Tdt} >R${ele[4]},00</Text>
                                 <View style={styles.Tda}>
-                                    <TouchableOpacity key={ele} style={styles.ButtonDelete} onPress={() => this.removeStorageStateLine(ele[0])}>
+                                    <TouchableOpacity key={ele} style={styles.ButtonDelete} onPress={() => this.removeStorageStateLinePecas(ele[0])}>
                                         <Text style={styles.TextButtonDelete}>Excluir</Text>
                                     </TouchableOpacity>
                                 </View>
                             </View>
                         ))}
-                    </View>
-                    <View style={styles.ContainerTable}>
                         <View style={styles.Tr}>
                             <Text style={styles.Tdq}></Text>
-                            <Text style={styles.Tdd}>MÃO DE OBRA</Text>
+                            <Text style={styles.Tdd}>VALOR TOTAL</Text>
                             <Text style={styles.Tdu}></Text>
-                            <Text style={styles.Tdt}>R$ {this.state.valorMãoDeObra},00</Text>
+                            <Text style={styles.Tdt}>R$ {this.state.valorTotalPecas}</Text>
                             <Text style={styles.Tda}></Text>
                         </View>
+                    </View>
+                    <View style={styles.ContainerTable}>
+                        <Text style={styles.TextInfoInput}>Tabela de mão de obra</Text>
+                        <View style={styles.Tr}>
+                            <Text style={styles.Tdq}>QTD</Text>
+                            <Text style={styles.Tdd}>DESCRIÇÂO</Text>
+                            <Text style={styles.Tdu}>V.UNIT</Text>
+                            <Text style={styles.Tdt}>TOTAL</Text>
+                            <Text style={styles.Tda}></Text>
+                        </View>
+                        {this.state.linhasMaoDeObra.map((ele) => (
+                            <View key={ele[0]} style={styles.Tr}>
+                                <Text style={styles.Tdq} >{ele[1]}</Text>
+                                <Text style={styles.Tdd} >{ele[2]}</Text>
+                                <Text style={styles.Tdu} >R${ele[3]},00</Text>
+                                <Text style={styles.Tdt} >R${ele[4]},00</Text>
+                                <View style={styles.Tda}>
+                                    <TouchableOpacity key={ele} style={styles.ButtonDelete} onPress={() => this.removeStorageStateLineMaoDeObra(ele[0])}>
+                                        <Text style={styles.TextButtonDelete}>Excluir</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                        ))}
                         <View style={styles.Tr}>
                             <Text style={styles.Tdq}></Text>
-                            <Text style={styles.Tdd}>VALOR tOTAL</Text>
+                            <Text style={styles.Tdd}>VALOR TOTAL</Text>
+                            <Text style={styles.Tdu}></Text>
+                            <Text style={styles.Tdt}>R$ {this.state.valorTotalMãoDeObra}</Text>
+                            <Text style={styles.Tda}></Text>
+                        </View>
+                    </View>
+                    <View style={styles.ContainerTable}>
+                    <Text style={styles.TextInfoInput}>Valor total</Text>
+                        <View style={styles.Tr}>
+                            <Text style={styles.Tdq}></Text>
+                            <Text style={styles.Tdd}>VALOR TOTAL</Text>
                             <Text style={styles.Tdu}></Text>
                             <Text style={styles.Tdt}>R$ {this.state.valorTotalFinal}</Text>
                             <Text style={styles.Tda}></Text>
@@ -236,15 +309,14 @@ export default class App extends Component {
                             <TextInput style={styles.TextInput} keyboardType="numeric" defaultValue={this.state.valorTotal} onChangeText={(text) => this.setState({ valorTotal: text })} />
                         </View>
                         <View style={styles.ButtonFinish}>
-                            <TouchableOpacity style={styles.Button} onPress={this.addLine}>
-                                <Text style={styles.TextButton}>Adicionar na linha</Text>
+                            <TouchableOpacity style={styles.Button} onPress={this.addPecaLinha}>
+                                <Text style={styles.TextButton}>Adicionar peça</Text>
                             </TouchableOpacity>
                         </View>
-                    </View>
-                    <View style={styles.MainContainer}>
-                        <View style={styles.ViewInputText}>
-                            <Text style={styles.TextInfoInput}>Valor mão de obra</Text>
-                            <TextInput style={styles.TextInput} keyboardType="numeric" defaultValue={this.state.valorMãoDeObra} onChangeText={this.setStorageMaoDeObra} />
+                        <View style={styles.ButtonFinish}>
+                            <TouchableOpacity style={styles.Button} onPress={this.addMaoDeObra}>
+                                <Text style={styles.TextButton}>Adicionar mão de obra</Text>
+                            </TouchableOpacity>
                         </View>
                     </View>
                     <View style={styles.PdfButton}>
