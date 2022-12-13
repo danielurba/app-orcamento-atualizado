@@ -18,10 +18,6 @@ export default class BudgetSaves extends Component {
         this.setState({ budgets: user })
     }
 
-    clearStorage = async () => {
-        await AsyncStorage.clear()
-    }
-
     removeBudgetStorage = async (budget) => {
         let state = this.state.budgets
         state.splice(state.indexOf(budget),1)
@@ -50,9 +46,6 @@ export default class BudgetSaves extends Component {
                             </View>
                         </View>
                     ))}
-                    <TouchableOpacity style={styles.Button} onPress={this.clearStorage}>
-                        <Text style={styles.TextButton}>Limpar</Text>
-                    </TouchableOpacity>
                 </View>
             </ScrollView>
         )
@@ -84,7 +77,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#fff",
         textAlign: "center",
         textAlignVertical: "center",
-        width: 260,
+        width: 240,
         height: 35,
         borderColor: "#000",
         borderWidth: 0.4,
@@ -95,7 +88,7 @@ const styles = StyleSheet.create({
         textAlignVertical: "center",
         justifyContent: "center",
         alignItems: "center",
-        width: 120,
+        width: 70,
         height: 35,
         borderColor: "#000",
         borderWidth: 0.4
@@ -104,7 +97,7 @@ const styles = StyleSheet.create({
         color: "#fff",
         textAlign: "center",
         textAlignVertical: "center",
-        width: 100
+        width: 70
         // padding: 10
     },
     ButtonDelete: {

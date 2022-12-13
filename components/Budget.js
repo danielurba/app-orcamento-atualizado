@@ -169,7 +169,6 @@ export default class App extends Component {
             directory: 'Orcamentos',
         }
         let file = await RNHTMLtoPDF.convert(options);
-        console.log(file.filePath)
         showMessage({
             message: "Pdf criado com sucesso !" + file.filePath,
             type: "success",
@@ -275,7 +274,7 @@ const styles = StyleSheet.create({
       },
       TextInput: {
         backgroundColor: "#fff",
-        width: 350,
+        width: 300,
         borderRadius: 10
     },
       text: {
@@ -330,7 +329,7 @@ const styles = StyleSheet.create({
           textAlign: "center",
           textAlignVertical: "center",
           fontSize: 12,
-          width: 120,
+          width: 100,
           height: 30,
           borderColor: "#000",
           borderWidth: 0.4
@@ -339,7 +338,7 @@ const styles = StyleSheet.create({
           backgroundColor: "#fff",
           textAlign: "center",
           textAlignVertical: "center",
-          width: 100,
+          width: 70,
           height: 30,
           borderColor: "#000",
           borderWidth: 0.4
@@ -348,7 +347,7 @@ const styles = StyleSheet.create({
           backgroundColor: "#fff",
           textAlign: "center",
           textAlignVertical: "center",
-          width: 100,
+          width: 80,
           height: 30,
           borderColor: "#000",
           borderWidth: 0.4

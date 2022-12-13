@@ -4,10 +4,32 @@ export default async function convertHtmlToPdf(namePrevia) {
     let dadosNow = await AsyncStorage.getItem(namePrevia)
     dadosNow = JSON.parse(dadosNow)
     let linhasHtml = ""
-    for (let i = 0; i < dadosNow.dadosCliente.linhas.length; i++) {
+    let totalOrcamento = 0
+    totalOrcamento += Number(dadosNow.dadosCliente.maoDeObra)
+    for (let i = 0; i < 15; i++) {
         linhasHtml = linhasHtml + '<tr id="id1">'
-        for (let j = 1; j < dadosNow.dadosCliente.linhas[i].length; j++) {
-            linhasHtml = linhasHtml + `<td celula>${dadosNow.dadosCliente.linhas[i][j]}</td>`
+        if(i < dadosNow.dadosCliente.linhas.length) {
+            for (let j = 1; j < dadosNow.dadosCliente.linhas[i].length; j++) {
+                if(j > 3) {
+                    totalOrcamento += Number(dadosNow.dadosCliente.linhas[i][j])
+                }
+                if(j > 2) {
+                    linhasHtml = linhasHtml + `<td celula>R$ ${dadosNow.dadosCliente.linhas[i][j]},00</td>`
+                } else {
+                    linhasHtml = linhasHtml + `<td celula>${dadosNow.dadosCliente.linhas[i][j]}</td>`
+                }
+                
+            }
+        } else if(i == 14) {
+            linhasHtml = linhasHtml + '<td celula></td>'
+            linhasHtml = linhasHtml + '<td celula>MÂO DE OBRA</td>'
+            linhasHtml = linhasHtml + '<td celula></td>'
+            linhasHtml = linhasHtml + `<td celula>R$ ${dadosNow.dadosCliente.maoDeObra},00</td>`
+        } 
+        else {
+            for (let j = 0; j < 4; j++) {
+                linhasHtml = linhasHtml + '<td celula> </td>'
+            }
         }
         linhasHtml = linhasHtml + '</tr>'
     }
@@ -212,7 +234,7 @@ export default async function convertHtmlToPdf(namePrevia) {
                 </tr>
                 <tr>
                     <td>CNPJ/CPF:</td>
-                    <td class="extende" id="cpf">${dadosNow.dadosCliente.cpnjCpf}</td>
+                    <td class="extende" id="cpf">${dadosNow.dadosCliente.cnpjCpf}</td>
                     <td>Inscr. Est./ RG:</td>
                     <td class="extende" id="rg">${dadosNow.dadosCliente.rg}</td>
                 </tr>
@@ -237,7 +259,7 @@ export default async function convertHtmlToPdf(namePrevia) {
                 ${linhasHtml}
                 <tr>
                     <td class="total" colspan="3">TOTAL R$</td>
-                    <td id="total"></td>
+                    <td id="total">R$ ${String(totalOrcamento)},00</td>
                 </tr>
             </thead>
         </table>

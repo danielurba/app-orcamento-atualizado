@@ -30,7 +30,7 @@ export default class App extends Component {
       modeloCarro: '',
       placaCarro: '',
       maoDeObra: '',
-      linhas: null,
+      linhas: [],
     }
   }
 
@@ -212,12 +212,12 @@ const styles = StyleSheet.create({
   },
   TextInput: {
     backgroundColor: "#fff",
-    width: 350,
+    width: 300,
     borderRadius: 10
 },
 TextInputDate: {
     backgroundColor: "#fff",
-    width: 250,
+    width: 210,
     borderRadius: 10
 },
 Date: {
