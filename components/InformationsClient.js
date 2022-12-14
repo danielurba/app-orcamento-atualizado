@@ -103,6 +103,12 @@ export default class App extends Component {
   }
 
   setStorageDadosCliente = async () => {
+    if(this.props.route.params) {
+      let budget = await AsyncStorage.getItem(this.props.route.params.budget)
+      budget = JSON.parse(budget)
+      this.setState({ linhasMaoDeObra: this.state.dadosCliente.linhasMaoDeObra = budget.dadosCliente.linhasMaoDeObra})
+      this.setState({ linhasPecas: this.state.dadosCliente.linhasPecas = budget.dadosCliente.linhasPecas}) 
+    }
     await AsyncStorage.multiSet([
       [this.state.namePrevia, JSON.stringify(this.state)]
     ])

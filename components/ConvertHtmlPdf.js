@@ -3,36 +3,45 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export default async function convertHtmlToPdf(namePrevia) {
     let dadosNow = await AsyncStorage.getItem(namePrevia)
     dadosNow = JSON.parse(dadosNow)
-    let linhasHtml = ""
+    let linhasHtmlPecas = ""
+    let linhasHtmlMaoDeObra = ""
     let totalOrcamento = 0
-    totalOrcamento += Number(dadosNow.dadosCliente.maoDeObra)
+    let valorTotalPecas = 0
+    let valorTotalMãoDeObra = 0
+    let contLinesMaoDeObra = 0
     for (let i = 0; i < 15; i++) {
-        linhasHtml = linhasHtml + '<tr id="id1">'
-        if(i < dadosNow.dadosCliente.linhas.length) {
-            for (let j = 1; j < dadosNow.dadosCliente.linhas[i].length; j++) {
+        if(i < dadosNow.dadosCliente.linhasPecas.length) {
+            linhasHtmlPecas += '<tr id="id1">\n'
+            for (let j = 1; j < dadosNow.dadosCliente.linhasPecas[i].length; j++) {
                 if(j > 3) {
-                    totalOrcamento += Number(dadosNow.dadosCliente.linhas[i][j])
+                    valorTotalPecas += Number(dadosNow.dadosCliente.linhasPecas[i][j])
                 }
                 if(j > 2) {
-                    linhasHtml = linhasHtml + `<td celula>R$ ${dadosNow.dadosCliente.linhas[i][j]},00</td>`
+                    linhasHtmlPecas += `<td celula>R$ ${dadosNow.dadosCliente.linhasPecas[i][j]},00</td>\n`
                 } else {
-                    linhasHtml = linhasHtml + `<td celula>${dadosNow.dadosCliente.linhas[i][j]}</td>`
+                    linhasHtmlPecas += `<td celula>${dadosNow.dadosCliente.linhasPecas[i][j]}</td>\n`
                 }
                 
             }
-        } else if(i == 14) {
-            linhasHtml = linhasHtml + '<td celula></td>'
-            linhasHtml = linhasHtml + '<td celula>MÂO DE OBRA</td>'
-            linhasHtml = linhasHtml + '<td celula></td>'
-            linhasHtml = linhasHtml + `<td celula>R$ ${dadosNow.dadosCliente.maoDeObra},00</td>`
-        } 
-        else {
-            for (let j = 0; j < 4; j++) {
-                linhasHtml = linhasHtml + '<td celula> </td>'
-            }
+            linhasHtmlPecas += '</tr>\n'
         }
-        linhasHtml = linhasHtml + '</tr>'
-    }
+        else if(contLinesMaoDeObra < dadosNow.dadosCliente.linhasMaoDeObra.length) {
+            linhasHtmlMaoDeObra += '<tr id="id1">\n'
+            for (let j = 1; j < dadosNow.dadosCliente.linhasMaoDeObra[contLinesMaoDeObra].length; j++) {
+                if(j > 3) {
+                    valorTotalMãoDeObra += Number(dadosNow.dadosCliente.linhasMaoDeObra[contLinesMaoDeObra][j])
+                }
+                if(j > 2) {
+                    linhasHtmlMaoDeObra += `<td celula>R$ ${dadosNow.dadosCliente.linhasMaoDeObra[contLinesMaoDeObra][j]},00</td>\n`
+                } else {
+                    linhasHtmlMaoDeObra += `<td celula>${dadosNow.dadosCliente.linhasMaoDeObra[contLinesMaoDeObra][j]}</td>\n`
+                }
+            }
+            contLinesMaoDeObra++
+            linhasHtmlMaoDeObra += '</tr>\n'
+        }
+        }
+    totalOrcamento = valorTotalMãoDeObra + valorTotalPecas
     let htmlOrcamento = `<style>
     header {
         grid-area: cabecalho;
@@ -61,7 +70,6 @@ export default async function convertHtmlToPdf(namePrevia) {
         border-radius: 7px;
         border: solid 1px #000;
         width: 800px;
-        height: 512px;
         overflow: hidden;
         border-left: none;
         border-right: none;
@@ -100,6 +108,10 @@ export default async function convertHtmlToPdf(namePrevia) {
 
     th {
         border: solid 1px #444;
+    }
+
+    td {
+        word-break: break-all;
     }
 
     .extende {
@@ -252,21 +264,45 @@ export default async function convertHtmlToPdf(namePrevia) {
             <thead>
                 <tr>
                     <th class="total2" width="90">QTDE.</th>
-                    <th class="total2" width="400">DESCRIÇÂO</th>
+                    <th class="total2" width="400">DESCRIÇÃO DE PEÇAS</th>
                     <th class="total2" width="90">V.UNIT.</th>
                     <th class="total2" width="210">TOTAL</th>
                 </tr>
-                ${linhasHtml}
+                ${linhasHtmlPecas}
                 <tr>
-                    <td class="total" colspan="3">TOTAL R$</td>
+                    <td class="total" colspan="3">VALOR TOTAL PEÇAS</td>
+                    <td id="total">R$ ${String(valorTotalPecas)},00</td>
+                </tr>
+                <tr>
+                    <td celula></td>
+                    <td celula></td>
+                    <td celula></td>
+                    <td celula></td>
+                </tr>
+                <tr>
+                    <th class="total2" width="90">QTDE.</th>
+                    <th class="total2" width="400">DESCRIÇÃO DE MÃO DE OBRA</th>
+                    <th class="total2" width="90">V.UNIT.</th>
+                    <th class="total2" width="210">TOTAL</th>
+                </tr>
+                ${linhasHtmlMaoDeObra}
+                <tr>
+                    <td class="total" colspan="3">VALOR TOTAL MÃO DE OBRA</td>
+                    <td id="total">R$ ${String(valorTotalMãoDeObra)},00</td>
+                </tr>
+                <tr>
+                    <td celula></td>
+                    <td celula></td>
+                    <td celula></td>
+                    <td celula></td>
+                </tr>
+                <tr>
+                    <td class="total" colspan="3">VALOR TOTAL ORÇAMENTO</td>
                     <td id="total">R$ ${String(totalOrcamento)},00</td>
                 </tr>
             </thead>
         </table>
     </footer>
-    <div>
-        <h5 style="margin:0;">Faça seu orçamento em pdf - whatsapp(45)99978-9334</h5>
-    </div>
 </div>`
     return htmlOrcamento
 }

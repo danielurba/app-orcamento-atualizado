@@ -28,7 +28,7 @@ export default class App extends Component {
         valorTotal: "",
         valorTotalMãoDeObra: "0",
         valorTotalPecas: "0",
-        valorTotalFinal: "0,00",
+        valorTotalFinal: "0",
         namePrevia: ""
     }
 
@@ -40,22 +40,25 @@ export default class App extends Component {
         dados = JSON.parse(dados)
         this.setState({ namePrevia: dados.namePrevia})
         if(dados.dadosCliente.linhasPecas != null) {
-            this.count = dados.dadosCliente.linhasPecas.length
+            this.countPeca = dados.dadosCliente.linhasPecas.length
+            this.countMaoDeObra = dados.dadosCliente.linhasMaoDeObra.length
         }
         if(this.props.route.params.update) {
             if(dados.dadosCliente.linhasPecas != null) {
-                // let valorTotalFinalLinhas = 0
-                // valorTotalFinalLinhas += Number(dados.dadosCliente.linhasMaoDeObra)
-                // dados.dadosCliente.linhas.forEach((linha) => {
-                //     valorTotalFinalLinhas += Number(linha[linha.length -1])
-                // })
-                // this.setState({ valorTotalFinal: String(valorTotalFinalLinhas) + ",00"})
+                let valorTotalFinalLinhasPecas = 0
+                dados.dadosCliente.linhasPecas.forEach((linha) => {
+                    valorTotalFinalLinhasPecas += Number(linha[linha.length -1])
+                })
+                let valorTotalFinalLinhasMaoDeObra = 0
+                dados.dadosCliente.linhasMaoDeObra.forEach((linha) => {
+                    valorTotalFinalLinhasMaoDeObra += Number(linha[linha.length -1])
+                })
+                this.setState({ valorTotalPecas: String(valorTotalFinalLinhasPecas)})
+                this.setState({ valorTotalMãoDeObra: String(valorTotalFinalLinhasMaoDeObra)})
+                this.setState({ valorTotalFinal: String(Number(this.state.valorTotalPecas) + Number(this.state.valorTotalMãoDeObra))})
                 this.setState({ linhasPecas: dados.dadosCliente.linhasPecas })
                 this.setState({ linhasMaoDeObra: dados.dadosCliente.linhasMaoDeObra })
-            } else {
-                // this.setState({ valorTotalFinal: dados.dadosCliente.maoDeObra + ",00"})
             }
-            // this.setState({ valorMãoDeObra: dados.dadosCliente.maoDeObra})
         }
     }
 
@@ -70,6 +73,12 @@ export default class App extends Component {
         await AsyncStorage.multiSet([
             [this.state.namePrevia, JSON.stringify(dados)]
           ])
+          let valorTotalFinalLinhas = 0
+          this.state.linhasPecas.forEach((linha) => {
+              valorTotalFinalLinhas += Number(linha[linha.length -1])
+          })
+          this.setState({ valorTotalPecas: String(valorTotalFinalLinhas)})
+          this.setState({ valorTotalFinal: String(Number(valorTotalFinalLinhas) + Number(this.state.valorTotalMãoDeObra))})
     }
 
     removeStorageStateLineMaoDeObra = async (line) => {
@@ -83,6 +92,12 @@ export default class App extends Component {
         await AsyncStorage.multiSet([
             [this.state.namePrevia, JSON.stringify(dados)]
           ])
+          let valorTotalFinalLinhas = 0
+          this.state.linhasMaoDeObra.forEach((linha) => {
+              valorTotalFinalLinhas += Number(linha[linha.length -1])
+          })
+          this.setState({ valorTotalMãoDeObra: String(valorTotalFinalLinhas)})
+          this.setState({ valorTotalFinal: String(Number(valorTotalFinalLinhas) + Number(this.state.valorTotalPecas))})
     }
 
     setStoragePecas = async () => {
@@ -214,7 +229,6 @@ export default class App extends Component {
             message: "Pdf criado com sucesso !" + file.filePath,
             type: "success",
             });
-        this.setState({ filePath: file.filePath });
     }
 
     render() {
@@ -247,7 +261,7 @@ export default class App extends Component {
                             <Text style={styles.Tdq}></Text>
                             <Text style={styles.Tdd}>VALOR TOTAL</Text>
                             <Text style={styles.Tdu}></Text>
-                            <Text style={styles.Tdt}>R$ {this.state.valorTotalPecas}</Text>
+                            <Text style={styles.Tdt}>R$ {this.state.valorTotalPecas},00</Text>
                             <Text style={styles.Tda}></Text>
                         </View>
                     </View>
@@ -277,7 +291,7 @@ export default class App extends Component {
                             <Text style={styles.Tdq}></Text>
                             <Text style={styles.Tdd}>VALOR TOTAL</Text>
                             <Text style={styles.Tdu}></Text>
-                            <Text style={styles.Tdt}>R$ {this.state.valorTotalMãoDeObra}</Text>
+                            <Text style={styles.Tdt}>R$ {this.state.valorTotalMãoDeObra},00</Text>
                             <Text style={styles.Tda}></Text>
                         </View>
                     </View>
@@ -287,7 +301,7 @@ export default class App extends Component {
                             <Text style={styles.Tdq}></Text>
                             <Text style={styles.Tdd}>VALOR TOTAL</Text>
                             <Text style={styles.Tdu}></Text>
-                            <Text style={styles.Tdt}>R$ {this.state.valorTotalFinal}</Text>
+                            <Text style={styles.Tdt}>R$ {this.state.valorTotalFinal},00</Text>
                             <Text style={styles.Tda}></Text>
                         </View>
                     </View>
