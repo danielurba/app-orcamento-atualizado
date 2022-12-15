@@ -14,6 +14,7 @@ import Home from './components/Home'
 import Budget from './components/Budget'
 import BudgetSaves from './components/BudgetSaves'
 import InformationsClient from './components/InformationsClient'
+import InformationsCompany from './components/InformationsCompany'
 
 export default class App extends Component {
   render() {
@@ -67,6 +68,20 @@ export default class App extends Component {
           component={Budget}
           options={{
             title: 'Orçamento',
+            headerStyle: {
+              backgroundColor: '#0000FF',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }}
+        />
+        <Stack.Screen
+          name="InformationsCompany"
+          component={InformationsCompany}
+          options={{
+            title: 'Informações da empresa',
             headerStyle: {
               backgroundColor: '#0000FF',
             },

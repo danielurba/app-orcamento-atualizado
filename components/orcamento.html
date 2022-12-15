@@ -40,10 +40,6 @@
             'tabela';
     }
 
-    img {
-        padding: 25px 0px 40px 0px;
-    }
-
     main table {
         padding: 5px;
     }
@@ -83,7 +79,8 @@
         margin: 0;
         float: right;
         text-align: center;
-        padding: 25px;
+        padding: 20px;
+        width: 200px;
     }
 
     .data {
@@ -93,30 +90,18 @@
         margin-bottom: -4px;
         margin-right: -2px;
         overflow: hidden;
-    }
-
-    .data div {
-        border: solid 1px #000;
-        padding: 0px 0px 50px 0px;
-        margin-left: -4px;
+        display: flex;
+        justify-content: end;
+        align-items: center;
+        flex-direction: column;
     }
 
     .numerodata {
         display: flex;
         font-size: 20px;
         margin: 0;
-        padding: 40% 0px 0px 10px;
-    }
-
-    .font {
-        margin: 0;
-        padding: 7px;
-        text-align: center;
-        width: 600px;
-        border: solid 1px #000;
-        border-left: none;
-        border-right: none;
-        border-bottom: none;
+        padding: 15px;
+        height: 20px;
     }
 
     .menupdf {
@@ -147,26 +132,61 @@
         height: 100px;
         width: 100px;
     }
+
+    .infos-empresa {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .empresa {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .image {
+        width: 250px;
+        height: 120px;
+        padding: 20px;
+    }
+
+    .image > img {
+        width: 100%;
+        height: 100%;
+    }
+
+    .font {
+        margin: 0;
+        padding: 7px;
+        text-align: center;
+        width: 600px;
+        border: solid 1px #000;
+        border-left: none;
+        border-right: none;
+        border-bottom: none;
+    }
 </style>
-<div id="orcamento">
+<div class="orcamento">
     <header>
-        <div>
-            <img src="https://docs.google.com/uc?id=1NZGbjI92g0Oci3fOfJ_7GyDju8zYWkBa" alt="PersonalCar" width="300" height="100">
-            <p class="info">W.CESAR RODRIGUES<br>
-                ACESSORIOS AUTOMOTIVOS<br><br>
-                <i style="color:rgb(55, 216, 23);" class="fa d-inline fa-lg fa-whatsapp"></i>
-                (45) <b>99953-5458</b><br><br>
-                <i class="fa fa-envelope"></i>
-                wrc.rodrigues82@hotmail.com
-            </p>
+        <div class="empresa">
+            <div class="infos-empresa">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThOCt6t0ZT_u17l7HU5ixjEN9InsIHS4Dzw1F9ExLq&s" alt="PersonalCar">
+                </div>
+                <p class="info">W.CESAR RODRIGUES<br>
+                    ACESSORIOS AUTOMOTIVOS<br><br>
+                    <i style="color:rgb(55, 216, 23);" class="fa d-inline fa-lg fa-whatsapp"></i>
+                    (45) <b>99953-5458</b><br><br>
+                    <i class="fa fa-envelope"></i>
+                    wrc.rodrigues82@hotmail.com
+                </p>
+            </div>
             <p class="font"><b>Rua Manoel Ribas, 3615 - CEP: 85811-130 - Cancelli - Cascavel/PR</b></p>
         </div>
         <div class="data">
-            <div>
-                <input type="radio" name="tipo" value="Pedido">PEDIDO<br>
-                <input type="radio" name="tipo" value="Orçamento">ORÇAMENTO
-            </div>
-            <nav class="numerodata">Data: <section id="date">${this.state.data}</section>
+            <nav class="numerodata">Data: <section id="date">12/10/2022</section>
             </nav>
         </div>
     </header>

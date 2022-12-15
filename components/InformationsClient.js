@@ -10,7 +10,7 @@ import {
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default class App extends Component {
+export default class InformationsClient extends Component {
   state = {
     namePrevia: '',
     dadosCliente: {

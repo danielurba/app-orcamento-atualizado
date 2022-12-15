@@ -18,6 +18,10 @@ export default class Home extends Component {
                 this.props.navigation.navigate('BudgetSaves')}>
                     <Text style={styles.TextButton}>Orçamentos salvos</Text>
                 </TouchableOpacity>
+                <TouchableOpacity style={styles.Button} onPress={() =>
+                this.props.navigation.navigate('InformationsCompany')}>
+                    <Text style={styles.TextButton}>Informações da empresa</Text>
+                </TouchableOpacity>
             </View>
         )
     }

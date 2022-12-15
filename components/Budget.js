@@ -18,7 +18,7 @@ import { showMessage, hideMessage } from "react-native-flash-message";
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default class App extends Component {
+export default class Budget extends Component {
     state = {
         linhasPecas: [],
         linhasMaoDeObra: [],
