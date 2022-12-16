@@ -15,7 +15,13 @@ export default class BudgetSaves extends Component {
     }
     async componentDidMount() {
         const user = await AsyncStorage.getAllKeys()
-        this.setState({ budgets: user })
+        let keysBudget = []
+        user.forEach((ele) => {
+            if(ele != "dataCompany") {
+                keysBudget.push(ele)
+            }
+        })
+        this.setState({ budgets: keysBudget })
     }
 
     removeBudgetStorage = async (budget) => {

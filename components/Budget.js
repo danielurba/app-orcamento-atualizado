@@ -219,6 +219,7 @@ export default class Budget extends Component {
     }
 
     async createPDF() {
+        // console.log(await convertHtmlToPdf(this.state.namePrevia))
         let options = {
             html: await convertHtmlToPdf(this.state.namePrevia),
             fileName: `${Date.now()}_Orçamento`,

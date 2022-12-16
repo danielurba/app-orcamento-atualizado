@@ -2,6 +2,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default async function convertHtmlToPdf(namePrevia) {
     let dadosNow = await AsyncStorage.getItem(namePrevia)
+    let dataCompany = await AsyncStorage.getItem("dataCompany")
+    dataCompany = JSON.parse(dataCompany)
+    const logo = dataCompany.logo[0] ? dataCompany.logo[0].uri : "./sualogoaqui.jpg"
+    console.log(logo)
     dadosNow = JSON.parse(dadosNow)
     let linhasHtmlPecas = ""
     let linhasHtmlMaoDeObra = ""
@@ -195,23 +199,46 @@ export default async function convertHtmlToPdf(namePrevia) {
         height: 100px;
         width: 100px;
     }
+    .infos-empresa {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .empresa {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .image {
+        width: 250px;
+        height: 120px;
+        padding: 20px;
+    }
+
+    .image > img {
+        width: 100%;
+        height: 100%;
+    }
 </style>
 <div id="orcamento">
     <header>
     <div class="empresa">
         <div class="infos-empresa">
             <div class="image">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThOCt6t0ZT_u17l7HU5ixjEN9InsIHS4Dzw1F9ExLq&s" alt="PersonalCar">
+                <img src=${logo} alt="Logo">
             </div>
-            <p class="info">W.CESAR RODRIGUES<br>
-                ACESSORIOS AUTOMOTIVOS<br><br>
+            <p class="info">${dataCompany.nomeEmpresa}<br><br>
+                CNPJ:${dataCompany.cnpj}<br><br>
                 <i style="color:rgb(55, 216, 23);" class="fa d-inline fa-lg fa-whatsapp"></i>
-                (45) <b>99953-5458</b><br><br>
+                <b>${dataCompany.telefone}</b><br><br>
                 <i class="fa fa-envelope"></i>
-                wrc.rodrigues82@hotmail.com
+                ${dataCompany.email}
             </p>
         </div>
-        <p class="font"><b>Rua Manoel Ribas, 3615 - CEP: 85811-130 - Cancelli - Cascavel/PR</b></p>
+        <p class="font"><b>${dataCompany.endereco}, ${dataCompany.numero} - CEP: ${dataCompany.cep} - ${dataCompany.bairro} - ${dataCompany.cidade}/${dataCompany.estado}</b></p>
     </div>
     <div class="data">
         <nav class="numerodata">Data: <section id="date">${dadosNow.dadosCliente.data}</section>

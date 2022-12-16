@@ -63,6 +63,23 @@ export default class InformationsClient extends Component {
       await this.setState({ namePrevia: `${Date.now()}_Previa_Orçamento`})
       const jsonValue = JSON.stringify(this.state)
       await AsyncStorage.setItem(this.state.namePrevia,jsonValue)
+      const dataCompany = await AsyncStorage.getItem("dataCompany")
+      if(dataCompany == null) {
+        const data = {
+          logo: require('./sualogoaqui.jpg'),
+          nomeEmpresa: "",
+          cnpj: "",
+          telefone: "",
+          email: "",
+          endereco: "",
+          numero: "",
+          cep: "",
+          bairro: "",
+          cidade: "",
+          estado: "",
+        }
+        await AsyncStorage.setItem("dataCompany",JSON.stringify(data))
+      }
     }
 }
   addInformationState = async (name, value) => {
