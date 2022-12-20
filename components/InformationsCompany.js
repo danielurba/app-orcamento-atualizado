@@ -18,7 +18,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export default class InformationsCompany extends Component {
 
     state = {
-        logo: require('./sualogoaqui.jpg'),
+        logo: require('./sualogoaqui.png'),
         nomeEmpresa: "",
         cnpj: "",
         telefone: "",
@@ -74,7 +74,12 @@ export default class InformationsCompany extends Component {
       if(name == "nomeEmpresa") {
         await this.setState({ nomeEmpresa: value })
       } else if(name == "cnpj") {
-        await this.setState({ cnpj: value })
+        let valuenew = value.replace(/\D/g, "")
+        valuenew = valuenew.replace(/^(\d{2})(\d)/, "$1.$2")
+        valuenew = valuenew.replace(/^(\d{2})\.(\d{3})(\d)/, "$1.$2.$3")
+        valuenew = valuenew.replace(/\.(\d{3})(\d)/, ".$1/$2")
+        valuenew = valuenew.replace(/(\d{4})(\d)/, "$1-$2")
+       await this.setState({ cnpj: valuenew })
       } else if(name == "telefone") {
         await this.setState({ telefone: value })
       } else if(name == "email") {
@@ -106,7 +111,7 @@ export default class InformationsCompany extends Component {
 
   render() {
     return (
-      <ScrollView>
+      <ScrollView keyboardShouldPersistTaps="handled">
         <View style={styles.MainContainer}>
             <View style={styles.ViewInputText}>
               <Text style={styles.TextInfoInput}>Logo da empresa</Text>
@@ -121,11 +126,11 @@ export default class InformationsCompany extends Component {
             </View>
             <View style={styles.ViewInputText}>
               <Text style={styles.TextInfoInput}>Cnpj</Text>
-              <TextInputComponent style={styles.TextInput} defaultValue={this.state.cnpj} name={'cnpj'} onChangeText={this.addInformationState}/>
+              <TextInputComponent style={styles.TextInput} maxLength={18} keyboardType="numeric" defaultValue={this.state.cnpj} name={'cnpj'} onChangeText={this.addInformationState}/>
             </View>
             <View style={styles.ViewInputText}>
               <Text style={styles.TextInfoInput}>Telefone</Text>
-              <TextInputComponent style={styles.TextInput} defaultValue={this.state.telefone} keyboardType="numeric" name={'telefone'} onChangeText={this.addInformationState}/>
+              <TextInputComponent style={styles.TextInput} maxLength={12} defaultValue={this.state.telefone} keyboardType="numeric" name={'telefone'} onChangeText={this.addInformationState}/>
             </View>
             <View style={styles.ViewInputText}>
               <Text style={styles.TextInfoInput}>E-mail</Text>
@@ -206,6 +211,7 @@ ViewInputText: {
   margin: 10
 },
 TextInfoInput: {
+  color: "#000",
   marginVertical: 5
 },
 ImageLogo: {

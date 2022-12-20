@@ -131,6 +131,13 @@ export default class Budget extends Component {
                 });
             return
         }
+        if(Number(this.state.valorUnico) < 0) {
+            showMessage({
+                message: "Você não pode passar valores negativos !",
+                type: "danger",
+                });
+            return
+        }
         await linhasNow.push(
             [
                 this.countPeca, 
@@ -160,6 +167,13 @@ export default class Budget extends Component {
                 });
             return
         }
+        if(Number(this.state.valorUnico) < 0) {
+            showMessage({
+                message: "Você não pode passar valores negativos !",
+                type: "danger",
+                });
+            return
+        }
         await linhasNow.push(
             [
                 this.countMaoDeObra, 
@@ -181,8 +195,9 @@ export default class Budget extends Component {
     }
 
     addTotalAmount = (value) => {
-        const valueNumber = Number(value) * Number(this.state.quantidade)
-        this.setState({ valorUnico: value })
+        let formatValue = value.replace(/[\D]+/g, '');
+        const valueNumber = Number(formatValue) * Number(this.state.quantidade)
+        this.setState({ valorUnico: formatValue })
         this.setState({ valorTotal: String(valueNumber)})
     }
 
@@ -234,7 +249,7 @@ export default class Budget extends Component {
 
     render() {
         return (
-            <ScrollView>
+            <ScrollView keyboardShouldPersistTaps="handled">
                 <View>
                     <View style={styles.ContainerTable}>
                     <Text style={styles.TextInfoInput}>Tabela de peças</Text>
@@ -309,7 +324,10 @@ export default class Budget extends Component {
                     <View style={styles.MainContainer}>
                         <View style={styles.ViewInputText}>
                             <Text style={styles.TextInfoInput}>Quantidade</Text>
-                            <TextInput style={styles.TextInput} keyboardType="numeric" defaultValue='1' onChangeText={(text) => this.setState({ quantidade: text })} />
+                            <TextInput style={styles.TextInput} contextMenuHidden={true} keyboardType="numeric" defaultValue='1' onChangeText={(text) =>  {
+                                let formatValue = text.replace(/[\D]+/g, '');
+                                this.setState({ quantidade: formatValue })}
+                                } />
                         </View>
                         <View style={styles.ViewInputText}>
                             <Text style={styles.TextInfoInput}>Descrição dos serviços</Text>
@@ -317,11 +335,11 @@ export default class Budget extends Component {
                         </View>
                         <View style={styles.ViewInputText}>
                             <Text style={styles.TextInfoInput}>Valor único</Text>
-                            <TextInput style={styles.TextInput} keyboardType="numeric" onChangeText={this.addTotalAmount}/>
+                            <TextInput style={styles.TextInput} contextMenuHidden={true} keyboardType="numeric" onChangeText={this.addTotalAmount}/>
                         </View>
                         <View style={styles.ViewInputText}>
                             <Text style={styles.TextInfoInput}>Valor total</Text>
-                            <TextInput style={styles.TextInput} keyboardType="numeric" defaultValue={this.state.valorTotal} onChangeText={(text) => this.setState({ valorTotal: text })} />
+                            <TextInput style={styles.TextInput} keyboardType="numeric" editable={false} defaultValue={this.state.valorTotal}/>
                         </View>
                         <View style={styles.ButtonFinish}>
                             <TouchableOpacity style={styles.Button} onPress={this.addPecaLinha}>
@@ -404,6 +422,7 @@ const styles = StyleSheet.create({
       },
       Tdq: {
           backgroundColor: "#fff",
+          color: "#000",
           textAlign: "center",
           textAlignVertical: "center",
           width: 30,
@@ -413,6 +432,7 @@ const styles = StyleSheet.create({
       },
       Tdd: {
           backgroundColor: "#fff",
+          color: "#000",
           textAlign: "center",
           textAlignVertical: "center",
           fontSize: 12,
@@ -423,6 +443,7 @@ const styles = StyleSheet.create({
       },
       Tdu: {
           backgroundColor: "#fff",
+          color: "#000",
           textAlign: "center",
           textAlignVertical: "center",
           width: 70,
@@ -432,6 +453,7 @@ const styles = StyleSheet.create({
       },
       Tdt: {
           backgroundColor: "#fff",
+          color: "#000",
           textAlign: "center",
           textAlignVertical: "center",
           width: 80,
@@ -459,6 +481,7 @@ const styles = StyleSheet.create({
         margin: 10
       },
       TextInfoInput: {
+        color: "#000",
         marginVertical: 5
       },
       TextButtonDelete: {

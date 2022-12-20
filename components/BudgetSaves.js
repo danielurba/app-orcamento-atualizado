@@ -33,7 +33,7 @@ export default class BudgetSaves extends Component {
     
     render() {
         return (
-            <ScrollView>
+            <ScrollView keyboardShouldPersistTaps="handled">
                 <View style={styles.MainContainer}>
                     <View style={styles.Tr}>
                         <Text style={styles.Tdq}>Nome do orçamento</Text>
@@ -81,6 +81,7 @@ const styles = StyleSheet.create({
     },
     Tdq: {
         backgroundColor: "#fff",
+        color: "#000",
         textAlign: "center",
         textAlignVertical: "center",
         width: 240,
@@ -90,6 +91,7 @@ const styles = StyleSheet.create({
     },
     Tdd: {
         backgroundColor: "#fff",
+        color: "#000",
         textAlign: "center",
         textAlignVertical: "center",
         justifyContent: "center",

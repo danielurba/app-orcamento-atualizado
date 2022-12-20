@@ -4,8 +4,7 @@ export default async function convertHtmlToPdf(namePrevia) {
     let dadosNow = await AsyncStorage.getItem(namePrevia)
     let dataCompany = await AsyncStorage.getItem("dataCompany")
     dataCompany = JSON.parse(dataCompany)
-    const logo = dataCompany.logo[0] ? dataCompany.logo[0].uri : "./sualogoaqui.jpg"
-    console.log(logo)
+    const logo = dataCompany.logo[0] ? dataCompany.logo[0].uri : "./sualogoaqui.png"
     dadosNow = JSON.parse(dadosNow)
     let linhasHtmlPecas = ""
     let linhasHtmlMaoDeObra = ""
@@ -228,7 +227,7 @@ export default async function convertHtmlToPdf(namePrevia) {
     <div class="empresa">
         <div class="infos-empresa">
             <div class="image">
-                <img src=${logo} alt="Logo">
+                <img src="${logo}" alt="Logo">
             </div>
             <p class="info">${dataCompany.nomeEmpresa}<br><br>
                 CNPJ:${dataCompany.cnpj}<br><br>

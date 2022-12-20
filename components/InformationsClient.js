@@ -66,7 +66,7 @@ export default class InformationsClient extends Component {
       const dataCompany = await AsyncStorage.getItem("dataCompany")
       if(dataCompany == null) {
         const data = {
-          logo: require('./sualogoaqui.jpg'),
+          logo: require('./sualogoaqui.png'),
           nomeEmpresa: "",
           cnpj: "",
           telefone: "",
@@ -107,7 +107,11 @@ export default class InformationsClient extends Component {
     } else if(name == "prazoEntrega") {
       dadosClienteNow.prazoEntrega = value
     } else if(name == "cnpjCpf") {
-      dadosClienteNow.cnpjCpf = value
+      let valuenew = value.replace(/\D/g, "")
+      valuenew = valuenew.replace(/(\d{3})(\d)/, "$1.$2")
+      valuenew = valuenew.replace(/(\d{3})(\d)/, "$1.$2")
+      valuenew = valuenew.replace(/(\d{3})(\d{1,2})$/, "$1-$2")
+      dadosClienteNow.cnpjCpf = valuenew
     } else if(name == "rg") {
       dadosClienteNow.rg = value
     } else if(name == "modeloCarro") {
@@ -143,7 +147,7 @@ export default class InformationsClient extends Component {
   }
   render() {
     return (
-      <ScrollView>
+      <ScrollView keyboardShouldPersistTaps="handled">
         <View style={styles.MainContainer}>
             <View style={styles.ViewInputText}>
               <Text style={styles.TextInfoInput}>Data</Text>
@@ -172,7 +176,7 @@ export default class InformationsClient extends Component {
             </View>
             <View style={styles.ViewInputText}>
               <Text style={styles.TextInfoInput}>Cep</Text>
-              <TextInputComponent style={styles.TextInput} keyboardType="numeric" defaultValue={this.state.dadosCliente.cep} name={'cep'} onChangeText={this.addInformationState}/>
+              <TextInputComponent style={styles.TextInput} maxLength={8} keyboardType="numeric" defaultValue={this.state.dadosCliente.cep} name={'cep'} onChangeText={this.addInformationState}/>
             </View>
             <View style={styles.ViewInputText}>
               <Text style={styles.TextInfoInput}>Cidade</Text>
@@ -184,7 +188,7 @@ export default class InformationsClient extends Component {
             </View>
             <View style={styles.ViewInputText}>
               <Text style={styles.TextInfoInput}>Telefone</Text>
-              <TextInputComponent style={styles.TextInput} keyboardType="numeric" defaultValue={this.state.dadosCliente.fone} name={'fone'} onChangeText={this.addInformationState}/>
+              <TextInputComponent style={styles.TextInput} maxLength={12} keyboardType="numeric" defaultValue={this.state.dadosCliente.fone} name={'fone'} onChangeText={this.addInformationState}/>
             </View>
             <View style={styles.ViewInputText}>
               <Text style={styles.TextInfoInput}>Condição de pagamento</Text>
@@ -196,7 +200,7 @@ export default class InformationsClient extends Component {
             </View>
             <View style={styles.ViewInputText}>
               <Text style={styles.TextInfoInput}>CNPJ/CFP</Text>
-              <TextInputComponent style={styles.TextInput} keyboardType="numeric" defaultValue={this.state.dadosCliente.cnpjCpf} name={'cnpjCpf'} onChangeText={this.addInformationState}/>
+              <TextInputComponent style={styles.TextInput} maxLength={14} keyboardType="numeric" defaultValue={this.state.dadosCliente.cnpjCpf} name={'cnpjCpf'} onChangeText={this.addInformationState}/>
             </View>
             <View style={styles.ViewInputText}>
               <Text style={styles.TextInfoInput}>Inscr. Est./ RG</Text>
@@ -262,6 +266,7 @@ ViewInputText: {
   margin: 10
 },
 TextInfoInput: {
+  color: "#000",
   marginVertical: 5
 }
   });
