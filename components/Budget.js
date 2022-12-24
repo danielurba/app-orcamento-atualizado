@@ -128,6 +128,9 @@ export default class Budget extends Component {
             showMessage({
                 message: "Campo de descriçao do produto vazio !",
                 type: "danger",
+                style: {
+                    marginTop: 50
+                }
                 });
             return
         }
@@ -135,6 +138,9 @@ export default class Budget extends Component {
             showMessage({
                 message: "Você não pode passar valores negativos !",
                 type: "danger",
+                style: {
+                    marginTop: 50
+                }
                 });
             return
         }
@@ -164,6 +170,9 @@ export default class Budget extends Component {
             showMessage({
                 message: "Campo de descriçao do produto vazio !",
                 type: "danger",
+                style: {
+                    marginTop: 50
+                }
                 });
             return
         }
@@ -171,6 +180,9 @@ export default class Budget extends Component {
             showMessage({
                 message: "Você não pode passar valores negativos !",
                 type: "danger",
+                style: {
+                    marginTop: 50
+                }
                 });
             return
         }
@@ -244,16 +256,19 @@ export default class Budget extends Component {
         showMessage({
             message: "Pdf criado com sucesso !" + file.filePath,
             type: "success",
+            style: {
+                marginTop: 50
+            }
             });
     }
 
     render() {
         return (
             <ScrollView keyboardShouldPersistTaps="handled">
-                <View>
-                    <View style={styles.ContainerTable}>
+                <View accessible={true}>
+                    <View accessible={true} style={styles.ContainerTable}>
                     <Text style={styles.TextInfoInput}>Tabela de peças</Text>
-                        <View style={styles.Tr}>
+                        <View accessible={true} style={styles.Tr}>
                             <Text style={styles.Tdq}>QTD</Text>
                             <Text style={styles.Tdd}>DESCRIÇÂO</Text>
                             <Text style={styles.Tdu}>V.UNIT</Text>
@@ -261,19 +276,19 @@ export default class Budget extends Component {
                             <Text style={styles.Tda}></Text>
                         </View>
                         {this.state.linhasPecas.map((ele) => (
-                            <View key={ele[0]} style={styles.Tr}>
+                            <View accessible={true} key={ele[0]} style={styles.Tr}>
                                 <Text style={styles.Tdq} >{ele[1]}</Text>
                                 <Text style={styles.Tdd} >{ele[2]}</Text>
                                 <Text style={styles.Tdu} >R${ele[3]},00</Text>
                                 <Text style={styles.Tdt} >R${ele[4]},00</Text>
-                                <View style={styles.Tda}>
+                                <View accessible={true} style={styles.Tda}>
                                     <TouchableOpacity key={ele} style={styles.ButtonDelete} onPress={() => this.removeStorageStateLinePecas(ele[0])}>
                                         <Text style={styles.TextButtonDelete}>Excluir</Text>
                                     </TouchableOpacity>
                                 </View>
                             </View>
                         ))}
-                        <View style={styles.Tr}>
+                        <View accessible={true} style={styles.Tr}>
                             <Text style={styles.Tdq}></Text>
                             <Text style={styles.Tdd}>VALOR TOTAL</Text>
                             <Text style={styles.Tdu}></Text>
@@ -281,9 +296,9 @@ export default class Budget extends Component {
                             <Text style={styles.Tda}></Text>
                         </View>
                     </View>
-                    <View style={styles.ContainerTable}>
+                    <View accessible={true} style={styles.ContainerTable}>
                         <Text style={styles.TextInfoInput}>Tabela de mão de obra</Text>
-                        <View style={styles.Tr}>
+                        <View accessible={true} style={styles.Tr}>
                             <Text style={styles.Tdq}>QTD</Text>
                             <Text style={styles.Tdd}>DESCRIÇÂO</Text>
                             <Text style={styles.Tdu}>V.UNIT</Text>
@@ -291,19 +306,19 @@ export default class Budget extends Component {
                             <Text style={styles.Tda}></Text>
                         </View>
                         {this.state.linhasMaoDeObra.map((ele) => (
-                            <View key={ele[0]} style={styles.Tr}>
+                            <View accessible={true} key={ele[0]} style={styles.Tr}>
                                 <Text style={styles.Tdq} >{ele[1]}</Text>
                                 <Text style={styles.Tdd} >{ele[2]}</Text>
                                 <Text style={styles.Tdu} >R${ele[3]},00</Text>
                                 <Text style={styles.Tdt} >R${ele[4]},00</Text>
-                                <View style={styles.Tda}>
+                                <View accessible={true} style={styles.Tda}>
                                     <TouchableOpacity key={ele} style={styles.ButtonDelete} onPress={() => this.removeStorageStateLineMaoDeObra(ele[0])}>
                                         <Text style={styles.TextButtonDelete}>Excluir</Text>
                                     </TouchableOpacity>
                                 </View>
                             </View>
                         ))}
-                        <View style={styles.Tr}>
+                        <View accessible={true} style={styles.Tr}>
                             <Text style={styles.Tdq}></Text>
                             <Text style={styles.Tdd}>VALOR TOTAL</Text>
                             <Text style={styles.Tdu}></Text>
@@ -311,9 +326,9 @@ export default class Budget extends Component {
                             <Text style={styles.Tda}></Text>
                         </View>
                     </View>
-                    <View style={styles.ContainerTable}>
+                    <View accessible={true} style={styles.ContainerTable}>
                     <Text style={styles.TextInfoInput}>Valor total</Text>
-                        <View style={styles.Tr}>
+                        <View accessible={true} style={styles.Tr}>
                             <Text style={styles.Tdq}></Text>
                             <Text style={styles.Tdd}>VALOR TOTAL</Text>
                             <Text style={styles.Tdu}></Text>
@@ -321,40 +336,40 @@ export default class Budget extends Component {
                             <Text style={styles.Tda}></Text>
                         </View>
                     </View>
-                    <View style={styles.MainContainer}>
-                        <View style={styles.ViewInputText}>
+                    <View accessible={true} style={styles.MainContainer}>
+                        <View accessible={true} style={styles.ViewInputText}>
                             <Text style={styles.TextInfoInput}>Quantidade</Text>
                             <TextInput style={styles.TextInput} contextMenuHidden={true} keyboardType="numeric" defaultValue='1' onChangeText={(text) =>  {
                                 let formatValue = text.replace(/[\D]+/g, '');
                                 this.setState({ quantidade: formatValue })}
                                 } />
                         </View>
-                        <View style={styles.ViewInputText}>
+                        <View accessible={true} style={styles.ViewInputText}>
                             <Text style={styles.TextInfoInput}>Descrição dos serviços</Text>
                             <TextInput style={styles.TextInput} onChangeText={(text) => this.setState({ descricao: text })} />
                         </View>
-                        <View style={styles.ViewInputText}>
+                        <View accessible={true} style={styles.ViewInputText}>
                             <Text style={styles.TextInfoInput}>Valor único</Text>
                             <TextInput style={styles.TextInput} contextMenuHidden={true} keyboardType="numeric" onChangeText={this.addTotalAmount}/>
                         </View>
-                        <View style={styles.ViewInputText}>
+                        <View accessible={true} style={styles.ViewInputText}>
                             <Text style={styles.TextInfoInput}>Valor total</Text>
                             <TextInput style={styles.TextInput} keyboardType="numeric" editable={false} defaultValue={this.state.valorTotal}/>
                         </View>
-                        <View style={styles.ButtonFinish}>
+                        <View accessible={true} style={styles.ButtonFinish}>
                             <TouchableOpacity style={styles.Button} onPress={this.addPecaLinha}>
                                 <Text style={styles.TextButton}>Adicionar peça</Text>
                             </TouchableOpacity>
                         </View>
-                        <View style={styles.ButtonFinish}>
+                        <View accessible={true} style={styles.ButtonFinish}>
                             <TouchableOpacity style={styles.Button} onPress={this.addMaoDeObra}>
                                 <Text style={styles.TextButton}>Adicionar mão de obra</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
-                    <View style={styles.PdfButton}>
+                    <View accessible={true} style={styles.PdfButton}>
                         <TouchableOpacity onPress={this.askPermission.bind(this)}>
-                            <View>
+                            <View accessible={true}>
                                 <Image source={{
                                         uri:
                                             'https://raw.githubusercontent.com/AboutReact/sampleresource/master/pdf.png',
@@ -396,8 +411,10 @@ const styles = StyleSheet.create({
           backgroundColor: "#333",
           justifyContent: "center",
           alignItems: "center",
-          borderRadius: 20,
-          marginLeft: 10
+          borderRadius: 15,
+          marginLeft: 10,
+          height: 48,
+          width: 300
       },
       TextButton: {
           color: "#fff",
@@ -475,7 +492,7 @@ const styles = StyleSheet.create({
           margin: 20
       },
       ButtonFinish: {
-          margin: 10
+        marginVertical: 10
       },
       ViewInputText: {
         margin: 10
@@ -488,7 +505,6 @@ const styles = StyleSheet.create({
         color: "#fff",
         textAlign: "center",
         textAlignVertical: "center",
-        // width: 20
     },
     ButtonDelete: {
         backgroundColor: "#dc3545",

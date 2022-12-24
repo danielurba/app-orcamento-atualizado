@@ -53,8 +53,6 @@ export default class InformationsCompany extends Component {
 
     loadImage = () => {
         launchImageLibrary({noData: true}, (response) => {
-            console.log(response)
-
             if(response.didCancel) {
                 return
             }
@@ -106,59 +104,62 @@ export default class InformationsCompany extends Component {
       showMessage({
         message: "Salvo com sucesso !",
         type: "success",
+        style: {
+          marginTop: 50
+      }
         });
     }
 
   render() {
     return (
       <ScrollView keyboardShouldPersistTaps="handled">
-        <View style={styles.MainContainer}>
-            <View style={styles.ViewInputText}>
+        <View accessible={true} style={styles.MainContainer}>
+            <View accessible={true} style={styles.ViewInputText}>
               <Text style={styles.TextInfoInput}>Logo da empresa</Text>
               <Image style={styles.ImageLogo} source={this.state.logo}/>
             </View>
             <TouchableOpacity style={styles.Button} onPress={this.loadImage}>
               <Text style={styles.TextButton}>Carregar imagem</Text>
             </TouchableOpacity>
-            <View style={styles.ViewInputText}>
+            <View accessible={true} style={styles.ViewInputText}>
               <Text style={styles.TextInfoInput}>Nome da empresa</Text>
               <TextInputComponent style={styles.TextInput} defaultValue={this.state.nomeEmpresa} name={'nomeEmpresa'} onChangeText={this.addInformationState}/>
             </View>
-            <View style={styles.ViewInputText}>
+            <View accessible={true} style={styles.ViewInputText}>
               <Text style={styles.TextInfoInput}>Cnpj</Text>
               <TextInputComponent style={styles.TextInput} maxLength={18} keyboardType="numeric" defaultValue={this.state.cnpj} name={'cnpj'} onChangeText={this.addInformationState}/>
             </View>
-            <View style={styles.ViewInputText}>
+            <View accessible={true} style={styles.ViewInputText}>
               <Text style={styles.TextInfoInput}>Telefone</Text>
               <TextInputComponent style={styles.TextInput} maxLength={12} defaultValue={this.state.telefone} keyboardType="numeric" name={'telefone'} onChangeText={this.addInformationState}/>
             </View>
-            <View style={styles.ViewInputText}>
+            <View accessible={true} style={styles.ViewInputText}>
               <Text style={styles.TextInfoInput}>E-mail</Text>
               <TextInputComponent style={styles.TextInput} defaultValue={this.state.email} name={'email'} onChangeText={this.addInformationState}/>
             </View>
-            <View style={styles.ViewInputText}>
+            <View accessible={true} style={styles.ViewInputText}>
               <Text style={styles.TextInfoInput}>Endereço</Text>
               <TextInputComponent style={styles.TextInput} defaultValue={this.state.endereco} name={'endereco'} onChangeText={this.addInformationState}/>
             </View>
-            <View style={styles.ViewInputText}>
+            <View accessible={true} style={styles.ViewInputText}>
               <Text style={styles.TextInfoInput}>Número</Text>
               <TextInputComponent style={styles.TextInput} defaultValue={this.state.numero} keyboardType="numeric"  name={'numero'} onChangeText={this.addInformationState}/>
             </View>
-            <View style={styles.ViewInputText}>
+            <View accessible={true} style={styles.ViewInputText}>
               <Text style={styles.TextInfoInput}>Cep</Text>
               <TextInputComponent style={styles.TextInput} defaultValue={this.state.cep} keyboardType="numeric"  name={'cep'} onChangeText={this.addInformationState}/>
             </View>
-            <View style={styles.ViewInputText}>
+            <View accessible={true} style={styles.ViewInputText}>
               <Text style={styles.TextInfoInput}>Bairro</Text>
               <TextInputComponent style={styles.TextInput} defaultValue={this.state.bairro} name={'bairro'} onChangeText={this.addInformationState}/>
             </View>
-            <View style={styles.ViewInputText}>
+            <View accessible={true} style={styles.ViewInputText}>
               <Text style={styles.TextInfoInput}>Cidade</Text>
               <TextInputComponent style={styles.TextInput} defaultValue={this.state.cidade} name={'cidade'} onChangeText={this.addInformationState}/>
             </View>
-            <View style={styles.ViewInputText}>
-              <Text style={styles.TextInfoInput}>Estado</Text>
-              <TextInputComponent style={styles.TextInput} defaultValue={this.state.estado} name={'estado'} onChangeText={this.addInformationState}/>
+            <View accessible={true} style={styles.ViewInputText}>
+              <Text style={styles.TextInfoInput}>Estado Ex:PR</Text>
+              <TextInputComponent style={styles.TextInput} maxLength={2} defaultValue={this.state.estado} name={'estado'} onChangeText={this.addInformationState}/>
             </View>
             <TouchableOpacity style={styles.Button} onPress={this.saveToDataStorage}>
               <Text style={styles.TextButton}>Salvar</Text>
@@ -204,6 +205,7 @@ Button: {
   justifyContent: "center",
   alignItems: "center",
   borderRadius: 10,
+  height: 48,
   margin: 10
 },
 

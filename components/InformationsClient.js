@@ -108,9 +108,17 @@ export default class InformationsClient extends Component {
       dadosClienteNow.prazoEntrega = value
     } else if(name == "cnpjCpf") {
       let valuenew = value.replace(/\D/g, "")
-      valuenew = valuenew.replace(/(\d{3})(\d)/, "$1.$2")
-      valuenew = valuenew.replace(/(\d{3})(\d)/, "$1.$2")
-      valuenew = valuenew.replace(/(\d{3})(\d{1,2})$/, "$1-$2")
+      if(valuenew.length <= 11) {
+        valuenew = valuenew.replace(/(\d{3})(\d)/, "$1.$2")
+        valuenew = valuenew.replace(/(\d{3})(\d)/, "$1.$2")
+        valuenew = valuenew.replace(/(\d{3})(\d{1,2})$/, "$1-$2")
+      } 
+      else {
+        valuenew = valuenew.replace(/^(\d{2})(\d)/, "$1.$2")
+        valuenew = valuenew.replace(/^(\d{2})\.(\d{3})(\d)/, "$1.$2.$3")
+        valuenew = valuenew.replace(/\.(\d{3})(\d)/, ".$1/$2")
+        valuenew = valuenew.replace(/(\d{4})(\d)/, "$1-$2")
+      }
       dadosClienteNow.cnpjCpf = valuenew
     } else if(name == "rg") {
       dadosClienteNow.rg = value
@@ -148,73 +156,73 @@ export default class InformationsClient extends Component {
   render() {
     return (
       <ScrollView keyboardShouldPersistTaps="handled">
-        <View style={styles.MainContainer}>
-            <View style={styles.ViewInputText}>
+        <View accessible={true} style={styles.MainContainer}>
+            <View accessible={true} style={styles.ViewInputText}>
               <Text style={styles.TextInfoInput}>Data</Text>
-              <View style={styles.Date}>
+              <View accessible={true} style={styles.Date}>
                   <TextInputComponent style={styles.TextInputDate} defaultValue={this.state.dadosCliente.data} name={'data'} onChangeText={this.addInformationState}/>
-                  <TouchableOpacity style={styles.Button} onPress={this.setDateTodayInput}>
+                  <TouchableOpacity style={styles.ButtonDate} onPress={this.setDateTodayInput}>
                       <Text style={styles.TextButton}>Data Atual</Text>
                   </TouchableOpacity>
               </View>
             </View>
-            <View style={styles.ViewInputText}>
+            <View accessible={true} style={styles.ViewInputText}>
               <Text style={styles.TextInfoInput}>Nome cliente</Text>
               <TextInputComponent style={styles.TextInput} defaultValue={this.state.dadosCliente.nome} name={'nomeCliente'} onChangeText={this.addInformationState} />
             </View>
-            <View style={styles.ViewInputText}>
+            <View accessible={true} style={styles.ViewInputText}>
               <Text style={styles.TextInfoInput}>Endereço</Text>
               <TextInputComponent style={styles.TextInput} defaultValue={this.state.dadosCliente.endereco} name={'endereco'} onChangeText={this.addInformationState}/>
             </View>
-            <View style={styles.ViewInputText}>
+            <View accessible={true} style={styles.ViewInputText}>
               <Text style={styles.TextInfoInput}>Número</Text>
               <TextInputComponent style={styles.TextInput} keyboardType="numeric" defaultValue={this.state.dadosCliente.numero} name={'numero'} onChangeText={this.addInformationState}/>
             </View>
-            <View style={styles.ViewInputText}>
+            <View accessible={true} style={styles.ViewInputText}>
               <Text style={styles.TextInfoInput}>Bairro</Text>
               <TextInputComponent style={styles.TextInput} defaultValue={this.state.dadosCliente.bairro} name={'bairro'} onChangeText={this.addInformationState}/>
             </View>
-            <View style={styles.ViewInputText}>
+            <View accessible={true} style={styles.ViewInputText}>
               <Text style={styles.TextInfoInput}>Cep</Text>
               <TextInputComponent style={styles.TextInput} maxLength={8} keyboardType="numeric" defaultValue={this.state.dadosCliente.cep} name={'cep'} onChangeText={this.addInformationState}/>
             </View>
-            <View style={styles.ViewInputText}>
+            <View accessible={true} style={styles.ViewInputText}>
               <Text style={styles.TextInfoInput}>Cidade</Text>
               <TextInputComponent style={styles.TextInput} defaultValue={this.state.dadosCliente.cidade} name={'cidade'} onChangeText={this.addInformationState}/>
             </View>
-            <View style={styles.ViewInputText}>
+            <View accessible={true} style={styles.ViewInputText}>
               <Text style={styles.TextInfoInput}>Estado</Text>
               <TextInputComponent style={styles.TextInput} defaultValue={this.state.dadosCliente.estado} name={'estado'} onChangeText={this.addInformationState}/>
             </View>
-            <View style={styles.ViewInputText}>
+            <View accessible={true} style={styles.ViewInputText}>
               <Text style={styles.TextInfoInput}>Telefone</Text>
               <TextInputComponent style={styles.TextInput} maxLength={12} keyboardType="numeric" defaultValue={this.state.dadosCliente.fone} name={'fone'} onChangeText={this.addInformationState}/>
             </View>
-            <View style={styles.ViewInputText}>
+            <View accessible={true} style={styles.ViewInputText}>
               <Text style={styles.TextInfoInput}>Condição de pagamento</Text>
               <TextInputComponent style={styles.TextInput} defaultValue={this.state.dadosCliente.condPag} name={'condPag'} onChangeText={this.addInformationState}/>
             </View>
-            <View style={styles.ViewInputText}>
+            <View accessible={true} style={styles.ViewInputText}>
               <Text style={styles.TextInfoInput}>Prazo de entrega</Text>
               <TextInputComponent style={styles.TextInput} defaultValue={this.state.dadosCliente.prazoEntrega} name={'prazoEntrega'} onChangeText={this.addInformationState}/>
             </View>
-            <View style={styles.ViewInputText}>
+            <View accessible={true} style={styles.ViewInputText}>
               <Text style={styles.TextInfoInput}>CNPJ/CFP</Text>
-              <TextInputComponent style={styles.TextInput} maxLength={14} keyboardType="numeric" defaultValue={this.state.dadosCliente.cnpjCpf} name={'cnpjCpf'} onChangeText={this.addInformationState}/>
+              <TextInputComponent style={styles.TextInput} maxLength={18} keyboardType="numeric" defaultValue={this.state.dadosCliente.cnpjCpf} name={'cnpjCpf'} onChangeText={this.addInformationState}/>
             </View>
-            <View style={styles.ViewInputText}>
+            <View accessible={true} style={styles.ViewInputText}>
               <Text style={styles.TextInfoInput}>Inscr. Est./ RG</Text>
               <TextInputComponent style={styles.TextInput} keyboardType="numeric" defaultValue={this.state.dadosCliente.rg} name={'rg'} onChangeText={this.addInformationState}/>
             </View>
-            <View style={styles.ViewInputText}>
-              <Text style={styles.TextInfoInput}>Modelo do carro</Text>
+            <View accessible={true} style={styles.ViewInputText}>
+              <Text style={styles.TextInfoInput}>Modelo do carro/moto</Text>
               <TextInputComponent style={styles.TextInput} defaultValue={this.state.dadosCliente.modeloCarro} name={'modeloCarro'} onChangeText={this.addInformationState}/>
             </View>
-            <View style={styles.ViewInputText}>
-              <Text style={styles.TextInfoInput}>Placa do carro</Text>
+            <View accessible={true} style={styles.ViewInputText}>
+              <Text style={styles.TextInfoInput}>Placa do carro/moto</Text>
               <TextInputComponent style={styles.TextInput} defaultValue={this.state.dadosCliente.placaCarro} name={'placaCarro'} onChangeText={this.addInformationState}/>
             </View>
-            <TouchableOpacity style={styles.Button} onPress={() =>
+            <TouchableOpacity style={styles.ButtonNext} onPress={() =>
                 this.props.navigation.navigate('Budget',{paramKey: this.state.namePrevia, update: this.update})}>
               <Text style={styles.TextButton}>Proxima tela</Text>
             </TouchableOpacity>
@@ -239,12 +247,13 @@ const styles = StyleSheet.create({
   },
   TextInput: {
     backgroundColor: "#fff",
-    width: 300,
+    height: 48,
     borderRadius: 10
 },
 TextInputDate: {
     backgroundColor: "#fff",
     width: 210,
+    height: 48,
     borderRadius: 10
 },
 Date: {
@@ -252,18 +261,29 @@ Date: {
 },
 TextButton: {
   color: "#fff",
-  padding: 10
+  padding: 5
 },
-Button: {
+ButtonNext: {
   backgroundColor: "#28a745",
   justifyContent: "center",
   alignItems: "center",
   borderRadius: 10,
-  margin: 10
+  margin: 10,
+  height: 48,
+},
+ButtonDate: {
+  backgroundColor: "#28a745",
+  justifyContent: "center",
+  alignItems: "center",
+  borderRadius: 10,
+  marginHorizontal: 10,
+  height: 48,
+  width: 80
 },
 
 ViewInputText: {
-  margin: 10
+  margin: 10,
+  width: 300
 },
 TextInfoInput: {
   color: "#000",

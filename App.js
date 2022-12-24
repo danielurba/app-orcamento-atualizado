@@ -1,6 +1,6 @@
 import React,{ Component } from 'react';
 import {
-  StyleSheet
+  StyleSheet, TouchableOpacity, Image
 } from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -38,7 +38,7 @@ export default class App extends Component {
         <Stack.Screen
           name="InformationsClient"
           component={InformationsClient}
-          options={{
+          options={({navigation}) => ({
             title: 'Informações do cliente',
             headerStyle: {
               backgroundColor: '#0000FF',
@@ -47,12 +47,16 @@ export default class App extends Component {
             headerTitleStyle: {
               fontWeight: 'bold',
             },
-          }}
+            headerLeft: () => 
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <Image source={require('./components/backleft.png')}/>
+            </TouchableOpacity>
+          })}
         />
         <Stack.Screen
           name="BudgetSaves"
           component={BudgetSaves}
-          options={{
+          options={({navigation}) => ({
             title: 'Orçamentos salvos',
             headerStyle: {
               backgroundColor: '#0000FF',
@@ -61,12 +65,16 @@ export default class App extends Component {
             headerTitleStyle: {
               fontWeight: 'bold',
             },
-          }}
+            headerLeft: () => 
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <Image source={require('./components/backleft.png')}/>
+            </TouchableOpacity>
+          })}
         />
         <Stack.Screen
           name="Budget"
           component={Budget}
-          options={{
+          options={({navigation}) => ({
             title: 'Orçamento',
             headerStyle: {
               backgroundColor: '#0000FF',
@@ -75,12 +83,16 @@ export default class App extends Component {
             headerTitleStyle: {
               fontWeight: 'bold',
             },
-          }}
+            headerLeft: () => 
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <Image source={require('./components/backleft.png')}/>
+            </TouchableOpacity>
+          })}
         />
         <Stack.Screen
           name="InformationsCompany"
           component={InformationsCompany}
-          options={{
+          options={({navigation}) => ({
             title: 'Informações da empresa',
             headerStyle: {
               backgroundColor: '#0000FF',
@@ -89,7 +101,11 @@ export default class App extends Component {
             headerTitleStyle: {
               fontWeight: 'bold',
             },
-          }}
+            headerLeft: () => 
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <Image source={require('./components/backleft.png')}/>
+            </TouchableOpacity>
+          })}
         />
       </Stack.Navigator>
       <FlashMessage position="top" />

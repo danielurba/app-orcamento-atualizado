@@ -9,6 +9,8 @@ import {
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import { showMessage, hideMessage } from "react-native-flash-message";
+
 export default class BudgetSaves extends Component {
     state = {
         budgets: []
@@ -29,23 +31,30 @@ export default class BudgetSaves extends Component {
         state.splice(state.indexOf(budget),1)
         this.setState({ budgets: state })
         await AsyncStorage.removeItem(budget)
+        showMessage({
+            message: "Excluido com sucesso !",
+            type: "success",
+            style: {
+              marginTop: 50
+          }
+        });
     }
     
     render() {
         return (
             <ScrollView keyboardShouldPersistTaps="handled">
-                <View style={styles.MainContainer}>
-                    <View style={styles.Tr}>
+                <View accessible={true} style={styles.MainContainer}>
+                    <View accessible={true} style={styles.Tr}>
                         <Text style={styles.Tdq}>Nome do orçamento</Text>
                         <Text style={styles.Tdd}>Ação</Text>
                     </View>
                     {this.state.budgets.map((ele) => (
-                        <View key={ele} style={styles.Tr}>
+                        <View accessible={true} key={ele} style={styles.Tr}>
                             <TouchableOpacity style={styles.Tdq} onPress={() =>
                                 this.props.navigation.navigate('InformationsClient',{budget: ele})}>
                                 <Text style={styles.Tdq}>{ele}</Text>
                             </TouchableOpacity>
-                            <View style={styles.Tdd}>
+                            <View accessible={true} style={styles.Tdd}>
                                 <TouchableOpacity key={ele} style={styles.ButtonDelete} onPress={() => this.removeBudgetStorage(ele)}>
                                     <Text style={styles.TextButtonDelete}>Excluir</Text>
                                 </TouchableOpacity>
@@ -85,7 +94,7 @@ const styles = StyleSheet.create({
         textAlign: "center",
         textAlignVertical: "center",
         width: 240,
-        height: 35,
+        height: 55,
         borderColor: "#000",
         borderWidth: 0.4,
     },
@@ -96,8 +105,8 @@ const styles = StyleSheet.create({
         textAlignVertical: "center",
         justifyContent: "center",
         alignItems: "center",
-        width: 70,
-        height: 35,
+        width: 80,
+        height: 55,
         borderColor: "#000",
         borderWidth: 0.4
     },
@@ -106,13 +115,12 @@ const styles = StyleSheet.create({
         textAlign: "center",
         textAlignVertical: "center",
         width: 70
-        // padding: 10
     },
     ButtonDelete: {
         backgroundColor: "#dc3545",
         justifyContent: "center",
         alignItems: "center",
         borderRadius: 8,
-        // margin: 5
+        height: 48
     },
   });

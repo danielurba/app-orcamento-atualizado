@@ -9,7 +9,7 @@ import {
 export default class Home extends Component {
     render() {
         return (
-            <View style={styles.MainContainer}>
+            <View accessible={true} style={styles.MainContainer}>
                 <TouchableOpacity style={styles.Button} onPress={() =>
                 this.props.navigation.navigate('InformationsClient')}>
                     <Text style={styles.TextButton}>Novo orçamento</Text>
@@ -38,7 +38,8 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         borderRadius: 10,
-        margin: 10
+        margin: 10,
+        height: 48
     },
     TextButton: {
         color: "#fff",
