@@ -66,7 +66,7 @@ export default class InformationsClient extends Component {
       const dataCompany = await AsyncStorage.getItem("dataCompany")
       if(dataCompany == null) {
         const data = {
-          logo: require('./sualogoaqui.png'),
+          logo: require('../src/sualogoaqui.png'),
           nomeEmpresa: "",
           cnpj: "",
           telefone: "",
@@ -243,18 +243,22 @@ const TextInputComponent = ({value, onChangeText, name, ...props}) => (
 const styles = StyleSheet.create({
   MainContainer: {
     justifyContent: 'center',
-    margin: 20
+    margin: 20,
   },
   TextInput: {
     backgroundColor: "#fff",
     height: 48,
-    borderRadius: 10
+    borderRadius: 10,
+    borderColor: "#000",
+    borderWidth: 0.4
 },
 TextInputDate: {
     backgroundColor: "#fff",
     width: 210,
     height: 48,
-    borderRadius: 10
+    borderRadius: 10,
+    borderColor: "#000",
+    borderWidth: 0.4
 },
 Date: {
     flexDirection: "row",
@@ -264,7 +268,7 @@ TextButton: {
   padding: 5
 },
 ButtonNext: {
-  backgroundColor: "#28a745",
+  backgroundColor: "#348532",
   justifyContent: "center",
   alignItems: "center",
   borderRadius: 10,
@@ -272,7 +276,7 @@ ButtonNext: {
   height: 48,
 },
 ButtonDate: {
-  backgroundColor: "#28a745",
+  backgroundColor: "#348532",
   justifyContent: "center",
   alignItems: "center",
   borderRadius: 10,

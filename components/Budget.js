@@ -257,7 +257,8 @@ export default class Budget extends Component {
             message: "Pdf criado com sucesso !" + file.filePath,
             type: "success",
             style: {
-                marginTop: 50
+                marginTop: 50,
+                backgroundColor: "#348532"
             }
             });
     }
@@ -395,7 +396,9 @@ const styles = StyleSheet.create({
       TextInput: {
         backgroundColor: "#fff",
         width: 300,
-        borderRadius: 10
+        borderRadius: 10,
+        borderColor: "#000",
+        borderWidth: 0.4
     },
       text: {
           color: 'black',
@@ -443,7 +446,7 @@ const styles = StyleSheet.create({
           textAlign: "center",
           textAlignVertical: "center",
           width: 30,
-          height: 30,
+          height: 55,
           borderColor: "#000",
           borderWidth: 0.4
       },
@@ -454,7 +457,7 @@ const styles = StyleSheet.create({
           textAlignVertical: "center",
           fontSize: 12,
           width: 100,
-          height: 30,
+          height: 55,
           borderColor: "#000",
           borderWidth: 0.4
       },
@@ -464,7 +467,7 @@ const styles = StyleSheet.create({
           textAlign: "center",
           textAlignVertical: "center",
           width: 70,
-          height: 30,
+          height: 55,
           borderColor: "#000",
           borderWidth: 0.4
       },
@@ -474,7 +477,7 @@ const styles = StyleSheet.create({
           textAlign: "center",
           textAlignVertical: "center",
           width: 80,
-          height: 30,
+          height: 55,
           borderColor: "#000",
           borderWidth: 0.4
       },
@@ -483,8 +486,8 @@ const styles = StyleSheet.create({
         textAlign: "center",
         textAlignVertical: "center",
         justifyContent: "center",
-        width: 50,
-        height: 30,
+        width: 60,
+        height: 55,
         borderColor: "#000",
         borderWidth: 0.4
     },
@@ -511,5 +514,8 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         borderRadius: 8,
+        height: 48,
+        width: 50,
+        margin: 5
     },
   });

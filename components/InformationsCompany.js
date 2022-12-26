@@ -15,10 +15,12 @@ import { showMessage, hideMessage } from "react-native-flash-message";
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import LogoDefaul from '../src/sualogoaqui.png'
+
 export default class InformationsCompany extends Component {
 
     state = {
-        logo: require('./sualogoaqui.png'),
+        logo: LogoDefaul,
         nomeEmpresa: "",
         cnpj: "",
         telefone: "",
@@ -105,7 +107,8 @@ export default class InformationsCompany extends Component {
         message: "Salvo com sucesso !",
         type: "success",
         style: {
-          marginTop: 50
+          marginTop: 50,
+          backgroundColor: "#348532"
       }
         });
     }
@@ -186,7 +189,9 @@ const styles = StyleSheet.create({
   TextInput: {
     backgroundColor: "#fff",
     width: 300,
-    borderRadius: 10
+    borderRadius: 10,
+    borderColor: "#000",
+    borderWidth: 0.4
 },
 TextInputDate: {
     backgroundColor: "#fff",
@@ -201,7 +206,7 @@ TextButton: {
   padding: 10
 },
 Button: {
-  backgroundColor: "#28a745",
+  backgroundColor: "#348532",
   justifyContent: "center",
   alignItems: "center",
   borderRadius: 10,

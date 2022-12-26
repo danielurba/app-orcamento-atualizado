@@ -49,7 +49,7 @@ export default class App extends Component {
             },
             headerLeft: () => 
             <TouchableOpacity onPress={() => navigation.goBack()}>
-              <Image source={require('./components/backleft.png')}/>
+              <Image style={styles.backLeft} source={require('./src/backleft.png')}/>
             </TouchableOpacity>
           })}
         />
@@ -67,7 +67,7 @@ export default class App extends Component {
             },
             headerLeft: () => 
             <TouchableOpacity onPress={() => navigation.goBack()}>
-              <Image source={require('./components/backleft.png')}/>
+              <Image style={styles.backLeft} source={require('./src/backleft.png')}/>
             </TouchableOpacity>
           })}
         />
@@ -85,7 +85,7 @@ export default class App extends Component {
             },
             headerLeft: () => 
             <TouchableOpacity onPress={() => navigation.goBack()}>
-              <Image source={require('./components/backleft.png')}/>
+              <Image style={styles.backLeft} source={require('./src/backleft.png')}/>
             </TouchableOpacity>
           })}
         />
@@ -103,7 +103,7 @@ export default class App extends Component {
             },
             headerLeft: () => 
             <TouchableOpacity onPress={() => navigation.goBack()}>
-              <Image source={require('./components/backleft.png')}/>
+              <Image style={styles.backLeft} source={require('./src/backleft.png')}/>
             </TouchableOpacity>
           })}
         />
@@ -115,5 +115,8 @@ export default class App extends Component {
 }
 
 const styles = StyleSheet.create({
-  
+  backLeft: {
+    height: 48,
+    width: 48
+  }
 });
